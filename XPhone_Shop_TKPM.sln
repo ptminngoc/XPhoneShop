@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33414.496
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPhone_Shop_TKPM", "XPhone_Shop_TKPM\XPhone_Shop_TKPM.csproj", "{BC1631A8-FAC4-4839-8A37-6A5DEE1CF80B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BC1631A8-FAC4-4839-8A37-6A5DEE1CF80B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC1631A8-FAC4-4839-8A37-6A5DEE1CF80B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC1631A8-FAC4-4839-8A37-6A5DEE1CF80B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC1631A8-FAC4-4839-8A37-6A5DEE1CF80B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {502547FA-B18D-478E-938B-8424BF2E8108}
+	EndGlobalSection
+EndGlobal
