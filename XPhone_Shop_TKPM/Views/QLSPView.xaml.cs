@@ -300,7 +300,7 @@ namespace XPhone_Shop_TKPM.Views
 
             //Trace.WriteLine("san pham thu " + index + ", " + _viewModel._productList[index].ProductID);
 
-            //nextPage.Content = new CTSPView(_viewModel._productList[index].ProductID);
+            nextPage.Content = new CTSPView(_viewModel._productList[index].ProductID);
         }
 
         private void addProductButton_Click(object sender, RoutedEventArgs e)
