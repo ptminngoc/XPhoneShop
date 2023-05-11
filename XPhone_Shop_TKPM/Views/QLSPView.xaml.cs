@@ -305,7 +305,7 @@ namespace XPhone_Shop_TKPM.Views
 
         private void addProductButton_Click(object sender, RoutedEventArgs e)
         {
-            //nextPage.Content = new ThemSPView();
+            nextPage.Content = new ThemSPView();
         }
 
         private void importProductButton_Click(object sender, RoutedEventArgs e)
