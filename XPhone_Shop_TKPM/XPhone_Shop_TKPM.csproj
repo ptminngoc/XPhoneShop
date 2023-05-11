@@ -5,6 +5,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <UserSecretsId>d8eaa18d-7afd-44f6-bca0-c8e367dbb129</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

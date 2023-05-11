@@ -39,6 +39,10 @@ namespace XPhone_Shop_TKPM.Commands
             {
                 viewModel.SelectedViewModel = new HTSPViewModel();
             }
+            else if (parameter.ToString() == "QLSP")
+            {
+                viewModel.SelectedViewModel = new QLSPViewModel();
+            }
             else if (parameter.ToString() == "dang_xuat")
             {
                 LoginView screen = new LoginView();
