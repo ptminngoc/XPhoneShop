@@ -35,7 +35,11 @@ namespace XPhone_Shop_TKPM.Commands
 
         public void Execute(object parameter)
         {
-            if (parameter.ToString() == "dang_xuat")
+            if (parameter.ToString() == "HTSP")
+            {
+                viewModel.SelectedViewModel = new HTSPViewModel();
+            }
+            else if (parameter.ToString() == "dang_xuat")
             {
                 LoginView screen = new LoginView();
                 screen.Show();

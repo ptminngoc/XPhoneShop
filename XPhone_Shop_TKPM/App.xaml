@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:XPhone_Shop_TKPM"
+             xmlns:views="clr-namespace:XPhone_Shop_TKPM.Views"
+             xmlns:viewmodels="clr-namespace:XPhone_Shop_TKPM.ViewModels"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -75,6 +77,10 @@
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=Button}}"/>
             </Style>
+
+            <DataTemplate DataType="{x:Type viewmodels:HTSPViewModel}">
+                <views:HTSPView/>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

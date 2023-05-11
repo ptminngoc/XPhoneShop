@@ -10,7 +10,7 @@ namespace XPhone_Shop_TKPM
 {
     internal class Global
     {
-        public static string ConnectionString = "Server = .\\SQLEXPRESS;\r\nDatabase = MyShopDB;\r\nTrusted_Connection=yes;\r\nTrustServerCertificate=True";
+        public static string ConnectionString = "Server = DELL_VWAN;\r\nDatabase = MyShopDB;\r\nTrusted_Connection=yes;\r\nTrustServerCertificate=True";
         public static string role = "";
         public static Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
         public static SqlConnection? Connection;

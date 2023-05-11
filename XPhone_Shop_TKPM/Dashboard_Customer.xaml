@@ -33,7 +33,7 @@
        
         <Border Background="#348F6C" Grid.Column="0" Grid.Row="1" BorderThickness="0">
             <StackPanel Margin="0 0 0 0" Name="menu">
-                <uc:MenuButton Margin="5,10,0,0" Title="Sản Phẩm" Icon="ViewDashboard" NameView="Dashboard"  Height="40" Loaded="MenuButton_Loaded"/>
+                <uc:MenuButton Margin="5,10,0,0" Title="Sản Phẩm" Icon="ViewDashboard" NameView="HTSP"  Height="40" Loaded="MenuButton_Loaded"/>
                 <uc:MenuButton Margin="5,10,0,0" Title="Giỏ Hàng" Icon="AccountGroup" NameView="QLKH"  Height="40" Loaded="MenuButton_Loaded"/>
                 <uc:MenuButton Margin="5,10,0,0" Title="Đơn Hàng" Icon="ClipboardTextPlayOutline" NameView="QLLOAISP"  Height="40" Loaded="MenuButton_Loaded"/>
             </StackPanel>
