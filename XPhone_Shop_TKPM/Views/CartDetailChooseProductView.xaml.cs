@@ -1,0 +1,105 @@
+﻿using XPhone_Shop_TKPM.Models;
+using XPhone_Shop_TKPM.UserControls;
+using XPhone_Shop_TKPM.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+
+namespace XPhone_Shop_TKPM.Views
+{
+    /// <summary>
+    /// Interaction logic for CartDetailChooseProductView.xaml
+    /// </summary>
+    public partial class CartDetailChooseProductView : Page
+    {
+        private OrderDetailChooseProductViewModel _viewmModel = new OrderDetailChooseProductViewModel();
+        private CartViewModel _cartViewModel = new CartViewModel();
+        public CartDetailChooseProductView()
+        {
+            InitializeComponent();
+            _cartViewModel = new CartViewModel();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            lst.ItemsSource = _viewmModel._productList;
+        }
+
+        private void lst_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lst.SelectedItem != null)
+            {
+                ProductModel selectedProduct = lst.SelectedItem as ProductModel;
+
+                selectedProductImage.Source = new BitmapImage(new Uri(_viewmModel.convertToAbsolute(selectedProduct!.ProductAvatar)));
+                selectedProductName.Text = selectedProduct.ProductName;
+                selectedProductPrice.Text = toVndCurrency(selectedProduct.ProductPrice);
+                selectedProductQuantity.Text = selectedProduct.ProductQuantity.ToString();
+            }
+        }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void addProductToCartButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (lst.SelectedItem != null)
+            {
+                ProductModel tempModel = lst.SelectedItem as ProductModel;
+
+                if (tempModel != null)
+                {
+
+                    if (addToCartQuantityTextBox.Text != "" && addToCartQuantityTextBox.Text != null)
+                    {
+                        if (!_viewmModel.addNewProductToCart(_cartViewModel.getCartID(), tempModel.ProductID ?? default(int), Int16.Parse(addToCartQuantityTextBox.Text), tempModel.ProductQuantity))
+                        {
+                            MessageBox.Show("Số lượng sản phẩm trong đơn hàng không được lớn hơn số lượng còn trong kho");
+                        }
+                        else
+                        {
+                            screen.Content = new CartDetailsView();
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Vui lòng nhập số lượng");
+                    }
+
+                }
+
+
+
+            }
+        }
+
+        private void backButton_Click(object sender, RoutedEventArgs e)
+        {
+            var select = Dashboard_Customer.menuBTN.Children[1] as MenuButton;
+            select?.btn.Focus();
+            screen.Content = new CartDetailsView();
+        }
+
+        private string toVndCurrency(double total)
+        {
+            CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");   // try with "en-US"
+
+            return total.ToString("N0", cul) + " VND";
+        }
+    }
+}

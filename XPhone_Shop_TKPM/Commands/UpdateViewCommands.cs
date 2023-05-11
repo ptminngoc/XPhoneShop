@@ -43,6 +43,10 @@ namespace XPhone_Shop_TKPM.Commands
             {
                 viewModel.SelectedViewModel = new QLSPViewModel();
             }
+            else if (parameter.ToString() == "Cart")
+            {
+                viewModel.SelectedViewModel = new OrderDetailsViewModel();
+            }
             else if (parameter.ToString() == "dang_xuat")
             {
                 LoginView screen = new LoginView();

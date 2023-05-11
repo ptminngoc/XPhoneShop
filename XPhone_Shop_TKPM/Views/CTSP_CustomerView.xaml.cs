@@ -34,8 +34,10 @@ namespace XPhone_Shop_TKPM.Views
     public partial class CTSP_CustomerView : Page
     {
         CTSPViewModel _viewModel = null;
+        CartViewModel _viewModelCart = null;
         int _currentCategoryCombobox = 0;
         bool _selected = false;
+        ProductModel _product = null;
 
         public CTSP_CustomerView(int? productID)
         {
@@ -43,7 +45,9 @@ namespace XPhone_Shop_TKPM.Views
 
             //productID = pID;
             _viewModel = new CTSPViewModel(productID);
+            _viewModelCart = new CartViewModel();
             base.DataContext = _viewModel._product;
+            _product = _viewModel._product;
 
             int i = 0;
             foreach (var category in _viewModel._categoryList)
@@ -177,7 +181,7 @@ namespace XPhone_Shop_TKPM.Views
 
         private void BtnCartProduct_Click(object sender, RoutedEventArgs e)
         {
-
+            _viewModelCart.addProductToCart(_product);
         }
     }
 }
