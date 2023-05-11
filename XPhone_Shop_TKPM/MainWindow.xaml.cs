@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using XPhone_Shop_TKPM.Views;
 
 namespace XPhone_Shop_TKPM
 {
@@ -23,6 +24,9 @@ namespace XPhone_Shop_TKPM
         public MainWindow()
         {
             InitializeComponent();
+            Window screen = new LoginView();
+            screen.Show();
+            this.Close();
         }
     }
 }

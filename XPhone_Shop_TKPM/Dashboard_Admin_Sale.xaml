@@ -1,0 +1,60 @@
+﻿<Window x:Class="XPhone_Shop_TKPM.Dashboard_Admin_Sale"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:uc="clr-namespace:XPhone_Shop_TKPM.UserControls"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:XPhone_Shop_TKPM"
+        mc:Ignorable="d"
+        Name="dashboard"
+        WindowStartupLocation="CenterScreen"
+        Title="Dashboard" Height="750" Width="1350">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="270"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Background="#ffffff" Grid.Column="1" Grid.RowSpan="3" MouseDown="Border_MouseDown" MouseLeftButtonDown="Border_MouseLeftButtonDown">
+            <ContentControl Content="{Binding SelectedViewModel}"/>
+        </Border>
+
+        <Border Grid.Column="0" CornerRadius="0 30 0 0" Background="#348F6C" BorderThickness="0">
+            <TextBlock FontFamily="{StaticResource Amsterdam One}" TextAlignment="Center" Foreground="Yellow" Margin="10 20 10 20" FontSize="25" >
+                My Shop
+            </TextBlock>
+        </Border>
+        <Border Background="#348F6C" Grid.Column="0" Grid.Row="1" BorderThickness="0">
+            <StackPanel Margin="0 0 0 0" Name="menu">
+                <uc:MenuButton Margin="5,10,0,0" Title="Dashboard" Icon="ViewDashboard" NameView="Dashboard"  Height="40" Loaded="MenuButton_Loaded"/>
+                <uc:MenuButton Margin="5,10,0,0" Title="Danh Sách Khách Hàng" Icon="AccountGroup" NameView="QLKH"  Height="40" Loaded="MenuButton_Loaded"/>
+                <uc:MenuButton Margin="5,10,0,0" Title="Danh Sách Loại Sản Phẩm" Icon="ClipboardTextPlayOutline" NameView="QLLOAISP"  Height="40" Loaded="MenuButton_Loaded"/>
+                <uc:MenuButton Margin="5,10,0,0" Title="Danh Sách Sản Phẩm" Icon="Clipboard" NameView="QLSP"  Height="40" Loaded="MenuButton_Loaded"/>
+                <uc:MenuButton Margin="5,15,0,0" Title="Quản Lý Đơn Hàng" Icon="PlusBox" Height="40" NameView="QLDH"  Loaded="MenuButton_Loaded"/>
+                <uc:MenuButton Margin="5,15,0,0" Title="Quản Lý Khuyến Mãi" Icon="Flower" Height="40" NameView="QLKM" Loaded="MenuButton_Loaded"/>
+
+                <Expander Margin="0,10,0,0"  Background="{x:Null}" FontSize="16" Foreground="White">
+                    <Expander.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="ChartBar" Width="25" Height="18" VerticalAlignment="Center"></Icon:PackIconMaterial>
+                            <TextBlock Text="Thống kê" FontSize="16"  VerticalAlignment="Center" Margin="5 0 0 0"></TextBlock>
+                        </StackPanel>
+                    </Expander.Header>
+                    <StackPanel Name="subMenu">
+                        <uc:MenuButton Margin="30,0,0,0" Title="Doanh thu và lợi nhuận" Height="40" NameView="TKDTVLN" Loaded="MenuButton_Loaded"/>
+                        <uc:MenuButton Margin="30,12,0,0" Title="Sản phẩm" Height="40" NameView="TKSP" Loaded="MenuButton_Loaded"/>
+                        <uc:MenuButton Margin="30,12,0,0" Title="Bán hàng" Height="40" NameView="TKBH" Loaded="MenuButton_Loaded"/>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+        </Border>
+        <Border Grid.Column="0" Grid.Row="2" CornerRadius="0 0 30 0" Background="#348F6C" BorderThickness="0">
+            <uc:MenuButton Margin="5,5,0,0" Title="Đăng Xuất" Icon="Logout" NameView="dang_xuat" Height="40" Loaded="MenuButton_Loaded"></uc:MenuButton>
+        </Border>
+    </Grid>
+</Window>
