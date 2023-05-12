@@ -84,6 +84,9 @@
             <DataTemplate DataType="{x:Type viewmodels:QLSPViewModel}">
                 <views:QLSPView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:QLLOAISPViewModel}">
+                <views:QLLOAISPView/>
+            </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:OrderDetailsViewModel}">
                 <views:CartDetailsView/>
             </DataTemplate>
