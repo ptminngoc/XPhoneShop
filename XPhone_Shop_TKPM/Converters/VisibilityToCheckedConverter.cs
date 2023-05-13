@@ -5,27 +5,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows;
 
 namespace XPhone_Shop_TKPM.Converters
 {
-    class RemoveTimeFromDateConverter : IValueConverter
+    public class VisibilityToCheckedConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            //DateTime date = (DateTime)value;
-           // string res = date.ToShortDateString();
+            if (value is Visibility visibility)
+            {
+                return (visibility == Visibility.Visible);
+            }
 
-            string temp = (string) value;
-            string[] res = temp.Split(' ');
-
-          
-            return res[0];
+            return false;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            if (value is bool isChecked)
+            {
+                return (isChecked ? Visibility.Visible : Visibility.Collapsed);
+            }
+
+            return Visibility.Collapsed;
         }
     }
-
 }

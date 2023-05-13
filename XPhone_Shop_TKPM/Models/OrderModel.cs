@@ -6,34 +6,15 @@ using System.Threading.Tasks;
 
 namespace XPhone_Shop_TKPM.Models
 {
-    internal class OrderModel
+    public class OrderModel
     {
-
-        public int? PromotionID
-        {
-            get; set;
-        }
-
-        public int OrderID
-        {
-            get; set;
-        }
-
-        public DateTime OrderDate
-        {
-            get; set;
-        }
-
-        public String ? OrderStatusDisplayText
-        {
-            get; set;
-        }
-
-        public String? CustomerPhone
-        {
-            get; set;
-        }
-       
+        public int? PromotionID { get; set; }
+        public int OrderID { get; set; }
+        public Double OrderTotal { get; set; }
+        public string? OrderStatusDisplayText { get; set; }
+        public DateTime? OrderDate { get; set; }
+        public int OrderStatus { get; set; }
+        public string? CustomerPhone { get; set; }
 
     }
 }
