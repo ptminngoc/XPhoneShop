@@ -64,6 +64,15 @@ namespace XPhone_Shop_TKPM.Commands
                     myWindow.Close();
                 }
             }
+            else if (parameter.ToString() == "QLDH")
+            {
+                viewModel.SelectedViewModel = new QLDHViewModel();
+            }
+            else if (parameter.ToString() == "QLKM")
+            {
+                viewModel.SelectedViewModel = new QLKMViewModel();
+            }
+
         }
     }
 }

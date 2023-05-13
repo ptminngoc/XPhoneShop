@@ -122,6 +122,8 @@ namespace XPhone_Shop_TKPM.Views
                     byte[] entropyInBytes = Convert.FromBase64String(entropyIn64);
                     byte[] cypherTextInBytes = Convert.FromBase64String(passwordStrHash);
 
+                    Debug.WriteLine(entropyInBytes.ToString());
+
                     byte[] passwordInBytes = ProtectedData.Unprotect(cypherTextInBytes,
                         entropyInBytes,
                         DataProtectionScope.CurrentUser
