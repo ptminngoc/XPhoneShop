@@ -15,10 +15,10 @@ namespace XPhone_Shop_TKPM.Converters
             //DateTime date = (DateTime)value;
            // string res = date.ToShortDateString();
 
-            string temp = (string) value;
+            string temp = value.ToString();
             string[] res = temp.Split(' ');
 
-          
+            
             return res[0];
         }
 
