@@ -17,25 +17,28 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="2.4*"/>
+            <RowDefinition Height="6*"/>
             <RowDefinition Height="10*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="1.5*"/>
         </Grid.RowDefinitions>
         <Border Background="#ffffff" Grid.Column="1" Grid.RowSpan="3" Grid.Row ="0" Grid.ColumnSpan="2"  MouseDown="Border_MouseDown" MouseLeftButtonDown="Border_MouseLeftButtonDown">
             <ContentControl Content="{Binding SelectedViewModel}"/>
         </Border>
 
-        <Border Grid.Column="0" Grid.RowSpan="1" CornerRadius="0 30 0 0" Background="#348F6C" BorderThickness="0">
-            <TextBlock FontFamily="{StaticResource Amsterdam One}" TextAlignment="Center" Foreground="Yellow" Margin="10 20 10 20" FontSize="25" >
-                My Shop
-            </TextBlock>
+        <Border Grid.Column="0" CornerRadius="0 30 0 0" Background="#348F6C" BorderThickness="0">
+            <StackPanel>
+                <Image Source="img/avatar.png" Stretch="UniformToFill" Width="170" Margin="0 20 0 5"></Image>
+                <TextBlock TextAlignment="Center" Foreground="#FFED00" FontSize="20" FontFamily="Comic Sans MS" Name="usernameTV"></TextBlock>
+            </StackPanel>
         </Border>
-       
+
         <Border Background="#348F6C" Grid.Column="0" Grid.Row="1" BorderThickness="0">
             <StackPanel Margin="0 0 0 0" Name="menu">
-                <uc:MenuButton Margin="5,10,0,0" Title="Sản Phẩm" Icon="ViewDashboard" NameView="HTSP"  Height="40" Loaded="MenuButton_Loaded"/>
-                <uc:MenuButton Margin="5,10,0,0" Title="Giỏ Hàng" Icon="AccountGroup" NameView="Cart"  Height="40" Loaded="MenuButton_Loaded"/>
-                <uc:MenuButton Margin="5,10,0,0" Title="Đơn Hàng" Icon="ClipboardTextPlayOutline" NameView="QLLOAISP"  Height="40" Loaded="MenuButton_Loaded"/>
+                <uc:MenuButton Margin="5,10,0,0" Title="Sản Phẩm" Icon="ViewDashboardOutline" NameView="HTSP"  Height="40" Loaded="MenuButton_Loaded"/>
+                <uc:MenuButton Margin="5,10,0,0" Title="Giỏ Hàng" Icon="ShoppingOutline" NameView="Cart"  Height="40" Loaded="MenuButton_Loaded"/>
+                <uc:MenuButton Margin="5,10,0,0" Title="Đơn Mua" Icon="ClipboardTextPlayOutline" NameView="HTDM"  Height="40" Loaded="MenuButton_Loaded"/>
+                <uc:MenuButton Margin="5,10,0,0" Title="Thông Tin Tài Khoản" Icon="AccountOutline" NameView="TTTK"  Height="40" Loaded="MenuButton_Loaded"/>
+                <uc:MenuButton Margin="5,10,0,0" Title="Đổi Mật Khẩu" Icon="LockOutline" NameView="DMK"  Height="40" Loaded="MenuButton_Loaded"/>
             </StackPanel>
         </Border>
         <Border Grid.Column="0" Grid.Row="2" CornerRadius="0 0 30 0" Background="#348F6C" BorderThickness="0">

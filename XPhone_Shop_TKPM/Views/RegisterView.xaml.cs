@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -48,8 +49,9 @@ namespace XPhone_Shop_TKPM.Views
             var passwordConfirm = passwordConfirmTextBox.Password;
             var phone = phoneTextBox.Text;
             var email = emailTextBox.Text;
+            var address = addressTextBox.Text;
 
-            if (name == null || username == null || password == null || passwordConfirm == null || phone == null || email == null) 
+            if (name == null || username == null || password == null || passwordConfirm == null || phone == null || email == null || address == null)
             {
                 check = false;
                 MessageBox.Show("Hãy điền đầy đủ thông tin");
@@ -60,7 +62,7 @@ namespace XPhone_Shop_TKPM.Views
                 MessageBox.Show("Mật khẩu và mật khẩu nhập lại không trùng khớp");
             }
 
-            if(check == true)
+            if (check == true)
             {
                 //Kiểm tra kết nối tới Database
                 Global.Connection = await Task.Run(() =>
@@ -113,26 +115,22 @@ namespace XPhone_Shop_TKPM.Views
                 else
                 {
                     // encrypt password
-                    var passwordInBytes = Encoding.UTF8.GetBytes(password);
-                    var entropy = new byte[4] { 4, 15, 20, 166 };
+                    string salt = BCrypt.Net.BCrypt.GenerateSalt();
+                    string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password, salt);
 
-                    var cypherText = ProtectedData.Protect(
-                        passwordInBytes,
-                        entropy,
-                        DataProtectionScope.CurrentUser
-                    );
-
-                    string passwordIn64 = Convert.ToBase64String(cypherText);
-
-                    sql = $"INSERT INTO Customer VALUES(N'{name}', '{phone}', null, '{email}')";
+                    sql = $"INSERT INTO Customer VALUES(N'{name}', '{phone}', '{address}', '{email}')";
                     command = new SqlCommand(sql, Global.Connection);
                     command.ExecuteNonQuery();
 
-                    sql = $"INSERT INTO AccountUser VALUES(N'{username}', '{passwordIn64}', 'Customer', '{phone}')";
+                    sql = $"INSERT INTO AccountUser VALUES(N'{username}', '{hashedPassword}', 'Customer', '{phone}')";
                     command = new SqlCommand(sql, Global.Connection);
                     command.ExecuteNonQuery();
 
                     MessageBox.Show("Tạo tài khoản thành công");
+                    
+                    Window sc = new LoginView();
+                    sc.Show();
+                    this.Close();
                 }
             }
         }

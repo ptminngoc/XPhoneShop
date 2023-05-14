@@ -27,7 +27,7 @@
 
                 <ProgressBar Width="200" Height="200"  Style="{StaticResource MaterialDesignCircularProgressBar}" x:Name="progressBar" Canvas.ZIndex="3" Canvas.Left="540" Canvas.Top="275" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden"/>
 
-                <StackPanel VerticalAlignment="Center" Canvas.ZIndex="1" x:Name="loginStackPanel" Margin="425 30 0 0"
+                <StackPanel VerticalAlignment="Center" Canvas.ZIndex="1" x:Name="loginStackPanel" Margin="425 10 0 0"
                             >
                     <TextBlock Foreground="#348F6C" HorizontalAlignment="Center" VerticalAlignment="Center"  FontSize="50" Margin="0 20 0 0" Text="ĐĂNG KÝ" FontWeight="Bold"/>
                     <TextBox Margin="15 20 15 0" x:Name="nameTextBox" Width="400" FontSize="18" BorderThickness="2"
@@ -56,17 +56,16 @@
                          BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          materialDesign:HintAssist.Hint="Email" Padding="10 0 0 10"
                          />
+                    <TextBox Margin="0 20 0 0" x:Name="addressTextBox" Width="400" FontSize="18" BorderThickness="2"
+                         BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         materialDesign:HintAssist.Hint="Địa chỉ" Padding="10 0 0 10"
+                         />
 
                     <Button  Margin="0 20 0 20" Width="400" x:Name="loginButton" Style="{StaticResource MaterialDesignFlatDarkBgButton}" Click="register_btn_click"
                         materialDesign:ShadowAssist.ShadowDepth="Depth2" Height="50" Content="Đăng ký" FontSize="25" Background="#2A7D5D" materialDesign:ButtonAssist.CornerRadius="10" />
 
-                    <!--<Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="2" Margin="0 43 0 0"-->
-                    <!--CornerRadius="0,0,15,15" BorderBrush="Black" Background="IndianRed">
-                        <Button BorderBrush="{x:Null}"  x:Name="closeButton" Style="{StaticResource MaterialDesignFlatDarkBgButton}" 
-                        Content="Đóng" FontSize="25" Background="IndianRed" Height="50"  materialDesign:ButtonAssist.CornerRadius="15" Click="closeButton_Click"/>
-                    </Border>-->
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Canvas.Left="524" Canvas.Top="690">
+                <StackPanel Orientation="Horizontal" Canvas.Left="524" Canvas.Top="710">
                     <TextBlock FontSize="17" VerticalAlignment="Center">Bạn đã có tài khoản?</TextBlock>
                     <Button Background="{x:Null}" Foreground="#2A7D5D" FontSize="17" BorderThickness="0" Click="loginview_btn_click">Đăng Nhập</Button>
                 </StackPanel>

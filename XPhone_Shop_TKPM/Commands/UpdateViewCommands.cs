@@ -35,10 +35,24 @@ namespace XPhone_Shop_TKPM.Commands
 
         public void Execute(object parameter)
         {
+            //Customer
             if (parameter.ToString() == "HTSP")
             {
                 viewModel.SelectedViewModel = new HTSPViewModel();
             }
+            else if (parameter.ToString() == "HTDM")
+            {
+                viewModel.SelectedViewModel = new HTDMViewModel();
+            }
+            else if (parameter.ToString() == "TTTK")
+            {
+                viewModel.SelectedViewModel = new TTTKViewModel();
+            }
+            else if (parameter.ToString() == "DMK")
+            {
+                viewModel.SelectedViewModel = new DMKViewModel();
+            }
+            //Admin
             else if (parameter.ToString() == "QLSP")
             {
                 viewModel.SelectedViewModel = new QLSPViewModel();
