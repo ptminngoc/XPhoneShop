@@ -50,12 +50,8 @@ namespace XPhone_Shop_TKPM.Views
             // get order's customer info
             customer = _viewModel.getCustormerFromDB(currentCartId);
 
-
-            orderStatusComboBox.ItemsSource = _viewModel.orderStatusList();
-            orderStatusComboBox.SelectedIndex = _viewModel.getOrderStatusKey(currentCartId) - 1;
-
-            List<PromotionModel> promoList = _viewModel.getPromotionList();
-            promotionCombobox.ItemsSource = promoList;
+            List<PromotionModel> promoListForCustomer = filterListPromotionforCustomer();
+            promotionCombobox.ItemsSource = promoListForCustomer;
 
             int? promoID = _viewModel.getPromotionID(currentCartId);
             if (promoID == null)
@@ -64,8 +60,8 @@ namespace XPhone_Shop_TKPM.Views
             }
             else
             {
-                for (int i = 0; i < promoList.Count; ++i)
-                    if (promoID == promoList[i]._promotionId)
+                for (int i = 0; i < promoListForCustomer.Count; ++i)
+                    if (promoID == promoListForCustomer[i]._promotionId)
                     {
                         promotionCombobox.SelectedIndex = i;
                         break;
@@ -80,6 +76,41 @@ namespace XPhone_Shop_TKPM.Views
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             lst.ItemsSource = _viewModel.productList;
+           
+        }
+
+        void setPromotion ()
+        {
+            promotionCombobox.ItemsSource = filterListPromotionforCustomer();
+            promotionCombobox.SelectedIndex = 0;
+        }
+
+        // filter promotion
+        private List<PromotionModel> filterListPromotionforCustomer ()
+        {
+            List<PromotionModel> promoList = _viewModel.getPromotionList();
+            List<PromotionModel> promoListNew = new List<PromotionModel>();
+            promoListNew.Add(promoList[0]);
+            double total = _viewModel.calculateTotalMoney(0F);
+            for (int i = 1; i < promoList.Count; ++i)
+            {
+                if (total <= 50000000) {
+                    if (promoList[i]._promotionPercentage <= 10)
+                        promoListNew.Add(promoList[i]);
+                } 
+                else if (total <= 80000000)
+                {
+                    if (promoList[i]._promotionPercentage <= 20)
+                        promoListNew.Add(promoList[i]);
+                }
+                else if (total <= 100000000)
+                {
+                    if (promoList[i]._promotionPercentage <= 100)
+                        promoListNew.Add(promoList[i]);
+                }
+
+            }
+            return promoListNew;
         }
 
         // delete product from list + DB
@@ -89,7 +120,7 @@ namespace XPhone_Shop_TKPM.Views
             var currentItem = (OrderDetailsProductModel)button.DataContext;
 
             _viewModel.removeProductFromList((int)currentItem.ProductID, currentCartId);
-
+            setPromotion();
             updateMoneyTextBlock();
         }
 
@@ -102,7 +133,7 @@ namespace XPhone_Shop_TKPM.Views
 
             if (!_viewModel.updateProductQuantity(currentCartId, id, currentItem.orderQuantity, currentItem.ProductQuantity))
             {
-                MessageBox.Show("Not enough product in stock");
+                MessageBox.Show("Số lượng sản phẩm không đủ");
             }
             else
             {
@@ -115,15 +146,14 @@ namespace XPhone_Shop_TKPM.Views
             screen.Content = new CartDetailChooseProductView();
         }
 
-        private void orderStatusComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            _viewModel.updateStatus(currentCartId, orderStatusComboBox.SelectedIndex + 1);
-        }
-
         private void promotionCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             currentPromo = (PromotionModel)promotionCombobox.SelectedItem;
-
+            if (currentPromo == null)
+            {
+                promotionCombobox.SelectedIndex = 0;
+                currentPromo = (PromotionModel)promotionCombobox.SelectedItem;
+            }
             _viewModel.updatePromo(currentCartId, currentPromo._promotionId);
 
             // update current promo
@@ -155,7 +185,8 @@ namespace XPhone_Shop_TKPM.Views
                 if (listStatus[i].displayText.Equals("Đã thanh toán"))
                 {
                     _viewModel.updateStatus(currentCartId, i);
-                    orderStatusComboBox.SelectedIndex = i;
+                    MessageBox.Show("Đã thanh toán thành công");
+                    screen.Content = new CartDetailsView();
                 }
             }
         }

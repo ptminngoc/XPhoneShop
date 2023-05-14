@@ -48,6 +48,7 @@ namespace XPhone_Shop_TKPM.Views
             _viewModelCart = new CartViewModel();
             base.DataContext = _viewModel._product;
             _product = _viewModel._product;
+            addToCartQuantityTextBox.Text = "1";
 
             int i = 0;
             foreach (var category in _viewModel._categoryList)
@@ -118,13 +119,6 @@ namespace XPhone_Shop_TKPM.Views
             editProductPrice.IsReadOnly = true;
             editProductQuantity.IsReadOnly = true;
             comboboxCategory.IsEnabled = false;
-
-            restoreBtn.Visibility = Visibility.Hidden;
-        }
-
-        private void editAmount_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
 
         private void ComboPageIndex_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -146,10 +140,6 @@ namespace XPhone_Shop_TKPM.Views
             comboBox.Background = Brushes.Transparent;
         }
 
-        private void BtnAddBill_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
         private void NumberOnly_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             //var textBox = sender as TextBox;
@@ -179,9 +169,39 @@ namespace XPhone_Shop_TKPM.Views
             DataContext = new MainViewModel();
         }
 
+        private bool addProduct()
+        {
+            if (addToCartQuantityTextBox.Text == null || addToCartQuantityTextBox.Text.Equals(""))
+            {
+                MessageBox.Show("Hãy nhập số lượng sản phẩm");
+            }
+            else
+            {
+                var isAddSuccess = _viewModelCart.addProductToCart(_product, Int16.Parse(addToCartQuantityTextBox.Text));
+                if (isAddSuccess)
+                {
+                    editProductQuantity.Text = (_product.ProductQuantity - Int16.Parse(addToCartQuantityTextBox.Text)).ToString();
+                    MessageBox.Show("Đã thêm sản phẩm vào giỏ hàng");
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show("Sản phẩm không đủ số lượng");
+                }
+            }
+
+            return false;
+        }
+
         private void BtnCartProduct_Click(object sender, RoutedEventArgs e)
         {
-            _viewModelCart.addProductToCart(_product);
+            addProduct();
+        }
+
+        private void BtnBuyProduct_Click(object sender, RoutedEventArgs e)
+        {
+            if (addProduct())
+                screen.Content = new CartDetailsView();
         }
     }
 }

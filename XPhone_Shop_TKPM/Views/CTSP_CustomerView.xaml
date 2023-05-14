@@ -100,19 +100,20 @@
                         </TextBlock>
                     </materialDesign:HintAssist.Hint>
                 </TextBox>
-                <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,20,0,0" HorizontalAlignment="Center" >
+                <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,10,0,0" HorizontalAlignment="Center" >
                     <Label 
                        Margin="10, 0, 0, 0"
                        Height="25"
                        Content="Ảnh sản phẩm"
                        FontSize="15"
                        HorizontalAlignment="Center"
-                       VerticalAlignment="Bottom"
+                       VerticalAlignment="Top"
                        FontWeight="Bold"/>
 
                 </StackPanel>
 
-                <Border Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" VerticalAlignment="Top" Width="180" Height="180" HorizontalAlignment="Center">
+                <Border Grid.Column="3" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Top" Width="180" Height="180" HorizontalAlignment="Center"
+                        Margin="0 50 0 0">
                     <Border.Effect>
                         <DropShadowEffect
                                         Color="Black"
@@ -127,22 +128,7 @@
                        Source="{Binding Path=ProductAvatar,Converter={StaticResource absolute}}">
                     </Image>
                 </Border>
-                <Button 
-                    HorizontalAlignment="Right"
-                    Grid.Column="0" Grid.Row="4"
-                    Width="100" Content="Khôi phục"
-                    FontWeight="Bold"
-                    Padding="0"
-                    Foreground="White"
-                    FontSize="15"
-                    VerticalAlignment="Center"
-                    Margin="10, 0, 10, 0"
-                    Background="ForestGreen"
-                    FontFamily="Sitka Subheading"
-                    Visibility="Hidden"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Click="restoreBtn_Click"
-                    Name="restoreBtn"/>
+             
                 <Button 
                     Grid.Column="1" Grid.Row="4"
                     Width="230" Content="Thêm sản phẩm vào giỏ hàng"
@@ -151,15 +137,46 @@
                     FontSize="15"
                     Padding="0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
+                    VerticalAlignment="Top"
                     Background="ForestGreen"
                     FontFamily="Sitka Subheading"
-                    Margin="20, 0, 20, 0"
+                    Margin="0, 0, 0, 0"
                     Style="{StaticResource MaterialDesignRaisedButton}"
                     Click="BtnCartProduct_Click"
                     Name="btnCartProduct"/>
+
+                <StackPanel Margin="0 30 0 0" Orientation="Horizontal"
+                            Grid.Column="1" Grid.Row="4">
+                    <TextBlock FontSize="15" VerticalAlignment="Center"><Run Text="Nhập số lượng thêm vào giỏ hàng"/><Run Text=": "/></TextBlock>
+                    <TextBox PreviewTextInput="NumberOnly_PreviewTextInput" x:Name="addToCartQuantityTextBox" 
+                         d:Text="5" Style="{StaticResource MaterialDesignTextBoxBase}" 
+                         BorderBrush="{DynamicResource MaterialDesignDivider}"  
+                         Width="30"
+                         Height="30"
+                         TextAlignment="Center"
+                         BorderThickness="2" 
+                         />
+                </StackPanel>
+
+                <Button 
+                    Grid.Column="2" Grid.Row="4"
+                    Width="230" Content="Mua ngay"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    FontSize="15"
+                    Padding="0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="ForestGreen"
+                    FontFamily="Sitka Subheading"
+                    Margin="0, 0, 0, 0"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Click="BtnBuyProduct_Click"
+                    Name="btnBuyProduct"/>
+                
             </Grid>
         </Border>
+        <Frame Name="screen"></Frame>
         <Grid>
             <ContentControl Content="{Binding SelectedViewModel}"/>
         </Grid>

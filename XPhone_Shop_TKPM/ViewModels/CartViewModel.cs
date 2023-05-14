@@ -23,9 +23,9 @@ namespace XPhone_Shop_TKPM.ViewModels
             return _repository.getCartID();
         }
 
-        public Boolean addProductToCart (ProductModel p)
+        public Boolean addProductToCart (ProductModel p, int quantity)
         {
-            return _repository.addProductToCart(p);
+            return _repository.addProductToCart(p, quantity);
         }
 
         public void createCart ()
