@@ -61,6 +61,10 @@ namespace XPhone_Shop_TKPM.Commands
             {
                 viewModel.SelectedViewModel = new QLLOAISPViewModel();
             }
+            else if (parameter.ToString() == "QLKH")
+            {
+                viewModel.SelectedViewModel = new QLKHViewModel();
+            }
             else if (parameter.ToString() == "Cart")
             {
                 viewModel.SelectedViewModel = new OrderDetailsViewModel();

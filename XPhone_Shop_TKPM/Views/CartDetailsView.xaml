@@ -136,7 +136,7 @@
                         <TextBlock Text="Trạng thái đơn hàng" FontSize="20" FontWeight="Bold" Margin="0 0 0 10"/>
                         <ComboBox SelectionChanged="orderStatusComboBox_SelectionChanged" Name="orderStatusComboBox" Width="290" Height="50" Background="white"
                               Style="{StaticResource MaterialDesignOutlinedComboBox}"
-                                  IsEditable="False" IsReadOnly="False">
+                                  IsEnabled="False" IsReadOnly="True">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock FontWeight="Medium" FontSize="12" Text="{Binding displayText}" TextAlignment="Center" VerticalAlignment="Top"
