@@ -11,7 +11,7 @@
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded">
-    
+
     <materialDesign:Card UniformCornerRadius="15" Background="{DynamicResource ResourceKey=MaterialDesignPaper}" x:Name="loginMaterialCard">
         <materialDesign:DialogHost CloseOnClickAway="True" x:Name="DialogHost" >
             <Canvas>
@@ -35,7 +35,7 @@
                          BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          materialDesign:HintAssist.Hint="Nhập tên đăng nhập" Padding="10 0 0 10"
                          />
-                    <PasswordBox Margin="0 20 0 0" x:Name="passwordTextBox" Width="400" FontSize="18" BorderThickness="2" Padding="10 0 0 10"
+                    <PasswordBox Margin="0 20 0 0" x:Name="passwordTextBox" Width="400" FontSize="18" BorderThickness="2" Padding="10 0 5 10"
                          BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignFloatingHintRevealPasswordBox}"
                                  materialDesign:PasswordBoxAssist.IsPasswordRevealed="False"
                             materialDesign:HintAssist.Hint="Nhập mật khẩu"
@@ -53,7 +53,7 @@
                     </Border>-->
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Canvas.Left="524" Canvas.Top="690">
-                    <TextBlock FontSize="17" VerticalAlignment="Center">Bạn chưa có tài khoản? </TextBlock>
+                    <TextBlock FontSize="17" VerticalAlignment="Center">Bạn chưa có tài khoản?</TextBlock>
                     <Button Background="{x:Null}" Foreground="#2A7D5D" FontSize="17" BorderThickness="0" Click="register_btn_click">Đăng kí</Button>
                 </StackPanel>
             </Canvas>

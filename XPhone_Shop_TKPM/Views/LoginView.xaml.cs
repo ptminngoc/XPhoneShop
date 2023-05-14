@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using DocumentFormat.OpenXml.Math;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -30,27 +31,11 @@ namespace XPhone_Shop_TKPM.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //Đã lưu tài khoản, mật khẩu?
-            string username_saved = System.Configuration.ConfigurationManager.AppSettings["Username"]!;
-            string passwordIn64_saved = System.Configuration.ConfigurationManager.AppSettings["Password"]!;
-            string entropyIn64 = System.Configuration.ConfigurationManager.AppSettings["Entropy"]!;
-
-            // decrypt password từ app.config
-            if (passwordIn64_saved.Length != 0)
+            if (System.Configuration.ConfigurationManager.AppSettings["Password"]!.Length != 0)
             {
-                byte[] entropyInBytes = Convert.FromBase64String(entropyIn64);
-                byte[] cypherTextInBytes = Convert.FromBase64String(passwordIn64_saved);
-
-                byte[] passwordInBytes = ProtectedData.Unprotect(cypherTextInBytes,
-                    entropyInBytes,
-                    DataProtectionScope.CurrentUser
-                );
-
-                string password_saved = Encoding.UTF8.GetString(passwordInBytes);
-
                 //Gán vô TextBox tài khoản, mật khẩu đã lưu
-                userNameTextBox.Text = username_saved;
-                passwordTextBox.Password = password_saved;
+                userNameTextBox.Text = System.Configuration.ConfigurationManager.AppSettings["Username"]!;
+                passwordTextBox.Password = System.Configuration.ConfigurationManager.AppSettings["Password"]!;
             }
         }
 
@@ -85,7 +70,6 @@ namespace XPhone_Shop_TKPM.Views
 
             progressBar.IsIndeterminate = false;
             loadCanvas.Visibility = Visibility.Hidden;
-            AppKeyEnum.saveToConfig(password, username);
 
             //Nếu như kết nối thất bại
             if (Global.Connection == null)
@@ -102,7 +86,7 @@ namespace XPhone_Shop_TKPM.Views
                 string sql = $"select Rolename from Account where Username = '{username}'";
                 var command = new SqlCommand(sql, Global.Connection);
                 var reader = command.ExecuteReader();
-                
+
                 //Nếu tài khoản có tồn tại
                 if (reader.Read() != false)
                 {
@@ -115,32 +99,18 @@ namespace XPhone_Shop_TKPM.Views
                     command = new SqlCommand(sql, Global.Connection);
                     reader = command.ExecuteReader();
                     reader.Read();
-                    string passwordStrHash = (string)reader["Password"];
-
-                    //Đổi chuỗi password đã hash về dạng cũ
-                    string entropyIn64 = System.Configuration.ConfigurationManager.AppSettings["Entropy"]!;
-                    byte[] entropyInBytes = Convert.FromBase64String(entropyIn64);
-                    byte[] cypherTextInBytes = Convert.FromBase64String(passwordStrHash);
-
-                    Debug.WriteLine(entropyInBytes.ToString());
-
-                    byte[] passwordInBytes = ProtectedData.Unprotect(cypherTextInBytes,
-                        entropyInBytes,
-                        DataProtectionScope.CurrentUser
-                    );
-
-                    string passwordStr = Encoding.UTF8.GetString(passwordInBytes);
+                    string hashedPassword = (string)reader["Password"];
                     reader.Close();
 
-                    
                     //Kiểm tra mật khẩu vừa nhập với mật khẩu trong database
-                    //Nếu trùng khớp
-                    if(passwordStr == password)
+                    var result = BCrypt.Net.BCrypt.Verify(password, hashedPassword);
+
+                    if (result)
                     {
                         checkAccount = true;
                     }
                     //Nếu sai
-                    else 
+                    else
                     {
                         checkAccount = false;
                     }
@@ -165,24 +135,12 @@ namespace XPhone_Shop_TKPM.Views
                         command = new SqlCommand(sql, Global.Connection);
                         reader = command.ExecuteReader();
                         reader.Read();
-                        string passwordStrHash = (string)reader["Password"];
-
-                        //Đổi chuỗi password đã hash về dạng cũ
-                        string entropyIn64 = System.Configuration.ConfigurationManager.AppSettings["Entropy"]!;
-                        byte[] entropyInBytes = Convert.FromBase64String(entropyIn64);
-                        byte[] cypherTextInBytes = Convert.FromBase64String(passwordStrHash);
-
-                        byte[] passwordInBytes = ProtectedData.Unprotect(cypherTextInBytes,
-                            entropyInBytes,
-                            DataProtectionScope.CurrentUser
-                        );
-
-                        string passwordStr = Encoding.UTF8.GetString(passwordInBytes);
+                        string hashedPassword = (string)reader["Password"];
                         reader.Close();
 
                         //Kiểm tra mật khẩu vừa nhập với mật khẩu trong database
-                        //Nếu trùng khớp
-                        if (passwordStr == password)
+                        var result = BCrypt.Net.BCrypt.Verify(password, hashedPassword);
+                        if (result)
                         {
                             roleStr = "Customer";
                             checkAccount = true;
@@ -201,15 +159,20 @@ namespace XPhone_Shop_TKPM.Views
                     Global.usernameCurrent = username;
                     Global.role = roleStr;
 
+                    // save username, password to App.config
+                    if (rememberCheckBox.IsChecked == true)
+                    {
+                        AppKeyEnum.saveToConfig(password, username);
+                    }
 
                     if (roleStr == "Admin" || roleStr == "Sale")
                     {
                         Window sc = new Dashboard_Admin_Sale();
                         sc.Show();
                         this.Close();
-                    } 
-                    
-                    if(roleStr=="Customer") 
+                    }
+
+                    if (roleStr == "Customer")
                     {
                         Window sc = new Dashboard_Customer();
                         sc.Show();
@@ -239,6 +202,4 @@ namespace XPhone_Shop_TKPM.Views
             this.Close();
         }
     }
-
-  
 }

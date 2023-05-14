@@ -10,14 +10,17 @@
 
   <ItemGroup>
     <None Remove="Fonts\Amsterdam_One.ttf" />
+    <None Remove="img\avatar.png" />
     <None Remove="img\backBTN.png" />
     <None Remove="img\bg_login.png" />
+    <None Remove="img\bg_tttk.png" />
     <None Remove="img\close.png" />
     <None Remove="img\delete.png" />
     <None Remove="img\edit.png" />
   </ItemGroup>
 
   <ItemGroup>
+	  <PackageReference Include="BCrypt.Net" Version="0.1.0" />
 	  <PackageReference Include="Chart.js" Version="3.7.1" />
 	  <PackageReference Include="DocumentFormat.OpenXml" Version="2.20.0" />
 	  <PackageReference Include="InteractiveDataDisplay.WPF" Version="1.0.0" />
@@ -33,10 +36,12 @@
 
   <ItemGroup>
     <Resource Include="Fonts\Amsterdam_One.ttf" />
+    <Resource Include="img\avatar.png" />
     <Resource Include="img\backBTN.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="img\bg_login.png" />
+    <Resource Include="img\bg_tttk.png" />
     <Resource Include="img\close.png" />
     <Resource Include="img\delete.png" />
     <Resource Include="img\edit.png" />

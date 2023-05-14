@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace XPhone_Shop_TKPM.Models
 {
-    class ProductModel : INotifyPropertyChanged, ICloneable
+    public class ProductModel : INotifyPropertyChanged, ICloneable
     {
         public int? ProductID { get; set; }
         public int? CategoryID { get; set; }

@@ -23,24 +23,9 @@ namespace XPhone_Shop_TKPM
         {
 
 
-            // save username to config
+            // save username, password to config
             Global.config.AppSettings.Settings["Username"].Value = username;
-
-            // encrypt password
-            var passwordInBytes = Encoding.UTF8.GetBytes(password);
-            var entropy = new byte[4] { 4, 15, 20, 166};
-            
-            var cypherText = ProtectedData.Protect(
-                passwordInBytes,
-                entropy,
-                DataProtectionScope.CurrentUser
-            );
-
-            // save encrypted password to config
-            string passwordIn64 = Convert.ToBase64String(cypherText);
-            string entropyIn64 = Convert.ToBase64String(entropy);
-            Global.config.AppSettings.Settings["Password"].Value = passwordIn64;
-            Global.config.AppSettings.Settings["Entropy"].Value = entropyIn64;
+            Global.config.AppSettings.Settings["Password"].Value = password;
 
             Global.config.Save(ConfigurationSaveMode.Full);
             System.Configuration.ConfigurationManager.RefreshSection("appSettings");
