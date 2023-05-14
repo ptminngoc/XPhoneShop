@@ -153,7 +153,7 @@ namespace XPhone_Shop_TKPM.Views
 
         private void addCustomerButton_Click(object sender, RoutedEventArgs e)
         {
-            //NextPage.Content = new ThemKHView();
+            NextPage.Content = new ThemKHView();
             updatePage(_currentPage);
         }
 
@@ -162,7 +162,7 @@ namespace XPhone_Shop_TKPM.Views
             Button button = (Button)sender;
             var customer = (CustomerModel)button.DataContext;
 
-            //NextPage.Content = new CTKHView(customer.phone);
+            NextPage.Content = new CTKHView(customer.phone);
 
             updatePage(_currentPage);
         }
