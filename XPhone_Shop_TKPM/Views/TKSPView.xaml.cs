@@ -311,7 +311,8 @@ namespace XPhone_Shop_TKPM.Views
 
         private void CategoryColumn_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            // Man hinh thong ke chi tiet tung loai sp
+            CategoryTypeStatistic selected = first_chart.SelectedItem as CategoryTypeStatistic;
+            screen.Content = new TKCTSP(_start, _end, selected.id, selected.name);
         }
 
         private void resetButton_Click(object sender, RoutedEventArgs e)
