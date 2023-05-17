@@ -108,6 +108,9 @@
             <DataTemplate DataType="{x:Type viewmodels:QLKHViewModel}">
                 <views:QLKHView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:TKSPViewModel}">
+                <views:TKSPView/>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

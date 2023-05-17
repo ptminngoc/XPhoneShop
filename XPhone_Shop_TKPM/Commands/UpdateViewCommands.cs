@@ -90,6 +90,10 @@ namespace XPhone_Shop_TKPM.Commands
             {
                 viewModel.SelectedViewModel = new QLKMViewModel();
             }
+            else if (parameter.ToString() == "TKSP")
+            {
+                viewModel.SelectedViewModel = new TKSPViewModel();
+            }
 
         }
     }
