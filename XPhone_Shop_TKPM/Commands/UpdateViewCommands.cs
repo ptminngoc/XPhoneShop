@@ -94,6 +94,10 @@ namespace XPhone_Shop_TKPM.Commands
             {
                 viewModel.SelectedViewModel = new TKSPViewModel();
             }
+            else if (parameter.ToString() == "TKDTVLN")
+            {
+                viewModel.SelectedViewModel = new TK_DoanhThu_LoiNhuanViewModel();
+            }
 
         }
     }
