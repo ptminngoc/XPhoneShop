@@ -32,5 +32,10 @@ namespace XPhone_Shop_TKPM.ViewModels
         {
             _repository.createCart();
         }
+
+        public Boolean addProductToNewOrder(ProductModel p, int quantity)
+        {
+            return _repository.addProductToNewOrder(p, quantity);
+        }
     }
 }

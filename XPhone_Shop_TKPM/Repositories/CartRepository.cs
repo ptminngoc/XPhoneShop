@@ -61,12 +61,12 @@ namespace XPhone_Shop_TKPM.Repositories
             return true;
         }
 
-        public int getValueOfCartStatus()
+        public int getValueByOrderStatus(string key)
         {
             if (Global.Connection != null)
             {
                 try {
-                    string sql = "SELECT Value FROM PurchasesStatusEnum WHERE [Key] = 'Cart'";
+                    string sql = String.Format("SELECT Value FROM PurchasesStatusEnum WHERE [Key] = '{0}'", key);
                     var command = new SqlCommand(sql, Global.Connection);
                     var reader = command.ExecuteReader();
 
@@ -176,7 +176,7 @@ namespace XPhone_Shop_TKPM.Repositories
         public int getCartID()
         {
             var curCus = getCurrentCustomer();
-            var sql = string.Format("SELECT Purchase_ID\r\nFROM Purchase\r\nWHERE Customer_Phone = '{0}' AND Status = {1}", curCus.phone, getValueOfCartStatus());
+            var sql = string.Format("SELECT Purchase_ID\r\nFROM Purchase\r\nWHERE Customer_Phone = '{0}' AND Status = {1}", curCus.phone, getValueByOrderStatus("Cart"));
             var command = new SqlCommand(sql, Global.Connection);
             var reader = command.ExecuteReader();
             var id_cart = 0;
@@ -199,10 +199,75 @@ namespace XPhone_Shop_TKPM.Repositories
             var command_ = new SqlCommand(sql_, Global.Connection);
             command_.Parameters.AddWithValue("@ProductPrice", 0);
             command_.Parameters.AddWithValue("@Date", dt.ToString("yyyy-MM-d"));
-            command_.Parameters.AddWithValue("@Status", getValueOfCartStatus());
+            command_.Parameters.AddWithValue("@Status", getValueByOrderStatus("Cart"));
             command_.Parameters.AddWithValue("@Phone", currentCustomer.phone);
             // Thực thi câu lệnh SQL
             command_.ExecuteNonQuery();
+        }
+
+        public Boolean addProductToNewOrder(ProductModel p, int quantity)
+        {
+            if (getProductQuantity(p.ProductID) < quantity || getProductQuantity(p.ProductID) == -1)
+            {
+                return false;
+            }
+            else
+            {
+                updateStockProductQuantity(p.ProductID, getProductQuantity(p.ProductID) - quantity);
+            }
+            try
+            {
+                CustomerModel currentCustomer = this.getCurrentCustomer();
+                DateTime dt = DateTime.Now;
+
+                // Chen order moi vao
+                // Tạo câu lệnh SQL với tham số
+                string sql_ = "INSERT INTO Purchase VALUES (DEFAULT, @ProductPrice, @Date, @Status, @Phone)";
+
+                // Tạo đối tượng command và truyền tham số vào
+                var command_ = new SqlCommand(sql_, Global.Connection);
+                command_.Parameters.AddWithValue("@ProductPrice", p.ProductPrice);
+                command_.Parameters.AddWithValue("@Date", dt.ToString("yyyy-MM-d"));
+                command_.Parameters.AddWithValue("@Status", getValueByOrderStatus("New"));
+                command_.Parameters.AddWithValue("@Phone", currentCustomer.phone);
+
+                // Thực thi câu lệnh SQL
+                command_.ExecuteNonQuery();
+
+                // Lay id order
+                var sql = string.Format("SELECT MAX(Purchase_ID) AS Purchase_ID\r\nFROM Purchase\r\nWHERE Customer_Phone = '{0}' AND Status = {1}", currentCustomer.phone, getValueByOrderStatus("New"));
+                var command = new SqlCommand(sql, Global.Connection);
+                var reader = command.ExecuteReader();
+                var id_order = 0;
+                if (reader.Read())
+                {
+                    id_order = (int)reader["Purchase_ID"];
+                }
+                reader.Close();
+
+                // Tạo câu lệnh SQL với tham số
+                string sqlDetail = "INSERT INTO PurchaseDetail VALUES (@PurchaseID, @ProductID, @Quantity)";
+                string sqlPurchase = "UPDATE Purchase SET Total = @Total WHERE Purchase_ID = @PurchaseID";
+
+                // Tạo đối tượng command và truyền tham số vào
+                var commandDetail = new SqlCommand(sqlDetail, Global.Connection);
+                commandDetail.Parameters.AddWithValue("@PurchaseID", id_order);
+                commandDetail.Parameters.AddWithValue("@ProductID", p.ProductID);
+                commandDetail.Parameters.AddWithValue("@Quantity", quantity);
+
+                var commandPurchase = new SqlCommand(sqlPurchase, Global.Connection);
+                commandPurchase.Parameters.AddWithValue("@Total", p.ProductPrice * quantity);
+                commandPurchase.Parameters.AddWithValue("@PurchaseID", id_order);
+
+                // Thực thi câu lệnh SQL
+                commandDetail.ExecuteNonQuery();
+                commandPurchase.ExecuteNonQuery(); 
+            } catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public Boolean addProductToCart(ProductModel p, int quantity)
@@ -232,7 +297,7 @@ namespace XPhone_Shop_TKPM.Repositories
                         var command_ = new SqlCommand(sql_, Global.Connection);
                         command_.Parameters.AddWithValue("@ProductPrice", p.ProductPrice);
                         command_.Parameters.AddWithValue("@Date", dt.ToString("yyyy-MM-d"));
-                        command_.Parameters.AddWithValue("@Status", getValueOfCartStatus());
+                        command_.Parameters.AddWithValue("@Status", getValueByOrderStatus("Cart"));
                         command_.Parameters.AddWithValue("@Phone", currentCustomer.phone);
 
                         // Thực thi câu lệnh SQL
@@ -246,7 +311,7 @@ namespace XPhone_Shop_TKPM.Repositories
                 }
 
                 // Lay id cart
-                var sql = string.Format("SELECT Purchase_ID\r\nFROM Purchase\r\nWHERE Customer_Phone = '{0}' AND Status = {1}", currentCustomer.phone, getValueOfCartStatus());
+                var sql = string.Format("SELECT Purchase_ID\r\nFROM Purchase\r\nWHERE Customer_Phone = '{0}' AND Status = {1}", currentCustomer.phone, getValueByOrderStatus("Cart"));
                 var command = new SqlCommand(sql, Global.Connection);
                 var reader = command.ExecuteReader();
                 var id_cart = 0;
