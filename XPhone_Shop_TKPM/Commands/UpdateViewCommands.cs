@@ -61,6 +61,10 @@ namespace XPhone_Shop_TKPM.Commands
             {
                 viewModel.SelectedViewModel = new QLLOAISPViewModel();
             }
+            else if (parameter.ToString() == "QLKH")
+            {
+                viewModel.SelectedViewModel = new QLKHViewModel();
+            }
             else if (parameter.ToString() == "Cart")
             {
                 viewModel.SelectedViewModel = new OrderDetailsViewModel();
@@ -85,6 +89,14 @@ namespace XPhone_Shop_TKPM.Commands
             else if (parameter.ToString() == "QLKM")
             {
                 viewModel.SelectedViewModel = new QLKMViewModel();
+            }
+            else if (parameter.ToString() == "TKSP")
+            {
+                viewModel.SelectedViewModel = new TKSPViewModel();
+            }
+            else if (parameter.ToString() == "TKDTVLN")
+            {
+                viewModel.SelectedViewModel = new TK_DoanhThu_LoiNhuanViewModel();
             }
 
         }

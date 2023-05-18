@@ -105,6 +105,15 @@
             <DataTemplate DataType="{x:Type viewmodels:QLKMViewModel}">
                 <views:QLKMView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:QLKHViewModel}">
+                <views:QLKHView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:TKSPViewModel}">
+                <views:TKSPView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:TK_DoanhThu_LoiNhuanViewModel}">
+                <views:TK_DoanhThu_LoiNhuanView/>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

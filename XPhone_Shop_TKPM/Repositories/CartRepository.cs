@@ -94,6 +94,48 @@ namespace XPhone_Shop_TKPM.Repositories
             return 0;
         }
 
+        private int getProductQuantity(int? productId)
+        {
+            if (productId == null)
+                return -1;
+
+            int stockQuantity = 0;
+            var sql = $"select Quantity from Product where Product_ID = @id"; // query to get current quantity in stock
+            var command = new SqlCommand(sql, Global.Connection);
+
+            command.Parameters.AddWithValue("@id", productId);
+
+            // get quantity from queried
+            var reader = command.ExecuteReader();
+
+            reader.Read();
+            stockQuantity = (int)reader["Quantity"];
+
+            reader.Close();
+
+            return stockQuantity;
+        }
+
+        private void updateStockProductQuantity(int? productId, int newQuantity)
+        {
+            if (productId == null)
+                return;
+            if (Global.Connection == null)
+            {
+                Global.Connection = new SqlConnection(Global.ConnectionString);
+            }
+
+            // current in stock suitable for input quantity
+            // update stock quantity
+            var sqlUpdateStockQuantity = "update Product set Quantity = @stockQuantity where Product_ID = @pId";
+            var command = new SqlCommand(sqlUpdateStockQuantity, Global.Connection);
+
+            command.Parameters.AddWithValue("@stockQuantity", newQuantity);
+            command.Parameters.AddWithValue("@pId", productId);
+
+            command.ExecuteNonQuery();
+        }
+
         public int isExitsProductInCart(int id_cart, ProductModel p)
         {
             if(Global.Connection != null)
@@ -163,8 +205,16 @@ namespace XPhone_Shop_TKPM.Repositories
             command_.ExecuteNonQuery();
         }
 
-        public Boolean addProductToCart(ProductModel p)
+        public Boolean addProductToCart(ProductModel p, int quantity)
         {
+            if (getProductQuantity(p.ProductID) < quantity || getProductQuantity(p.ProductID) == -1)
+            {
+                return false;
+            } else
+            {
+                updateStockProductQuantity(p.ProductID, getProductQuantity(p.ProductID) - quantity);
+            }
+
             CustomerModel currentCustomer = this.getCurrentCustomer();
             DateTime dt = DateTime.Now;
             if (Global.Connection != null)
@@ -215,12 +265,12 @@ namespace XPhone_Shop_TKPM.Repositories
 
                         // Tạo đối tượng command và truyền tham số vào
                         var commandDetail = new SqlCommand(sqlDetail, Global.Connection);
-                        commandDetail.Parameters.AddWithValue("@Quantity", isExitsProductInCart(id_cart, p) + 1);
+                        commandDetail.Parameters.AddWithValue("@Quantity", isExitsProductInCart(id_cart, p) + quantity);
                         commandDetail.Parameters.AddWithValue("@PurchaseID", id_cart);
                         commandDetail.Parameters.AddWithValue("@ProductID", p.ProductID);
 
                         var commandPurchase = new SqlCommand(sqlPurchase, Global.Connection);
-                        commandPurchase.Parameters.AddWithValue("@Total", getTotalCart(id_cart) + p.ProductPrice);
+                        commandPurchase.Parameters.AddWithValue("@Total", getTotalCart(id_cart) + p.ProductPrice * quantity);
                         commandPurchase.Parameters.AddWithValue("@PurchaseID", id_cart);
 
                         // Thực thi câu lệnh SQL
@@ -238,10 +288,10 @@ namespace XPhone_Shop_TKPM.Repositories
                     var commandDetail = new SqlCommand(sqlDetail, Global.Connection);
                     commandDetail.Parameters.AddWithValue("@PurchaseID", id_cart);
                     commandDetail.Parameters.AddWithValue("@ProductID", p.ProductID);
-                    commandDetail.Parameters.AddWithValue("@Quantity", 1);
+                    commandDetail.Parameters.AddWithValue("@Quantity", quantity);
 
                     var commandPurchase = new SqlCommand(sqlPurchase, Global.Connection);
-                    commandPurchase.Parameters.AddWithValue("@Total", getTotalCart(id_cart) + p.ProductPrice);
+                    commandPurchase.Parameters.AddWithValue("@Total", getTotalCart(id_cart) + p.ProductPrice * quantity);
                     commandPurchase.Parameters.AddWithValue("@PurchaseID", id_cart);
 
                     // Thực thi câu lệnh SQL

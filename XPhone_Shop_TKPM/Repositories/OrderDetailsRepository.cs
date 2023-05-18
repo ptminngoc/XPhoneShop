@@ -55,6 +55,8 @@ namespace XPhone_Shop_TKPM.Repositories
 
             if (Global.Connection != null)
             {
+                updateStockProductQuantity(productId, getProductQuantity(productId) + getProductQuantityInOrder(productId, orderId));
+
                 var sql = $"delete from PurchaseDetail where Purchase_ID = @ID and Product_ID = @pID";
                 var command = new SqlCommand(sql, Global.Connection);
 
@@ -73,6 +75,26 @@ namespace XPhone_Shop_TKPM.Repositories
             var command = new SqlCommand(sql, Global.Connection);
 
             command.Parameters.AddWithValue("@id", productId);
+
+            // get quantity from queried
+            var reader = command.ExecuteReader();
+
+            reader.Read();
+            stockQuantity = (int)reader["Quantity"];
+
+            reader.Close();
+
+            return stockQuantity;
+        }
+
+        public int getProductQuantityInOrder(int productId, int orderId)
+        {
+            int stockQuantity = 0;
+            var sql = $"select Quantity from PurchaseDetail where Product_ID = @idProduct and Purchase_ID = @idPurchase"; // query to get current quantity in stock
+            var command = new SqlCommand(sql, Global.Connection);
+
+            command.Parameters.AddWithValue("@idProduct", productId);
+            command.Parameters.AddWithValue("@idPurchase", orderId);
 
             // get quantity from queried
             var reader = command.ExecuteReader();
