@@ -40,6 +40,10 @@ namespace XPhone_Shop_TKPM.Commands
             {
                 viewModel.SelectedViewModel = new HTSPViewModel();
             }
+            else if (parameter.ToString() == "Dashboard")
+            {
+                viewModel.SelectedViewModel = new DashboardViewModel();
+            }
             else if (parameter.ToString() == "HTDM")
             {
                 viewModel.SelectedViewModel = new HTDMViewModel();

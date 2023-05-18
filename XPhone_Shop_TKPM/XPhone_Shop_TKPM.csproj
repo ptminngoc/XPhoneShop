@@ -17,6 +17,13 @@
     <None Remove="img\close.png" />
     <None Remove="img\delete.png" />
     <None Remove="img\edit.png" />
+    <None Remove="img\icon\box.png" />
+    <None Remove="img\icon\cube.png" />
+    <None Remove="img\icon\diagram.png" />
+    <None Remove="img\icon\fire.png" />
+    <None Remove="img\icon\graph.png" />
+    <None Remove="img\icon\product_in_month.png" />
+    <None Remove="img\icon\total_product.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,6 +52,13 @@
     <Resource Include="img\close.png" />
     <Resource Include="img\delete.png" />
     <Resource Include="img\edit.png" />
+    <Resource Include="img\icon\box.png" />
+    <Resource Include="img\icon\cube.png" />
+    <Resource Include="img\icon\diagram.png" />
+    <Resource Include="img\icon\fire.png" />
+    <Resource Include="img\icon\graph.png" />
+    <Resource Include="img\icon\product_in_month.png" />
+    <Resource Include="img\icon\total_product.png" />
   </ItemGroup>
 
   <ItemGroup>
