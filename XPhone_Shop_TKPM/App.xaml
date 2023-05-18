@@ -130,6 +130,9 @@
             <DataTemplate DataType="{x:Type viewmodels:TK_DoanhThu_LoiNhuanViewModel}">
                 <views:TK_DoanhThu_LoiNhuanView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:TKBHViewModel}">
+                <views:TKBHView/>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

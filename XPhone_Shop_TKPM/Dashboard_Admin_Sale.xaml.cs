@@ -32,10 +32,10 @@ namespace XPhone_Shop_TKPM
             menuBTN = menu;
             subMenuBTN = subMenu;
 
-            //var select = menu.Children[0] as MenuButton;
-            ////select?.btn.Focus();
-            ////select.btn.Command = current.UpdateViewCommand;
-            ////select?.btn.Command.Execute("Dashboard");
+            var select = menu.Children[0] as MenuButton;
+            select?.btn.Focus();
+            select.btn.Command = current.UpdateViewCommand;
+            select?.btn.Command.Execute("Dashboard");
 
             //string _screen = System.Configuration.ConfigurationManager.AppSettings["Screen"]!;
             //if (_screen.Equals("Dashboard"))
@@ -109,17 +109,17 @@ namespace XPhone_Shop_TKPM
             //    select?.btn.Command.Execute("Dashboard");
             //}
 
-            //for (int i = 0; i < menuBTN.Children.Count; i++)
-            //{
-            //    if (menu.Children[i] is MenuButton)
-            //    {
-            //        var select_ = menu.Children[i] as MenuButton;
-            //        if (select_.btn.IsFocused == true)
-            //            select_.isActive = true;
-            //        else
-            //            select_.isActive = false;
-            //    }
-            //}
+            for (int i = 0; i < menuBTN.Children.Count; i++)
+            {
+                if (menu.Children[i] is MenuButton)
+                {
+                    var select_ = menu.Children[i] as MenuButton;
+                    if (select_.btn.IsFocused == true)
+                        select_.isActive = true;
+                    else
+                        select_.isActive = false;
+                }
+            }
 
             for (int i = 0; i < subMenuBTN.Children.Count; i++)
             {

@@ -73,19 +73,6 @@ namespace XPhone_Shop_TKPM.Commands
             {
                 viewModel.SelectedViewModel = new OrderDetailsViewModel();
             }
-            else if (parameter.ToString() == "dang_xuat")
-            {
-                LoginView screen = new LoginView();
-                screen.Show();
-                Window myWindow = Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.Name == "dashboard");
-
-                // Kiểm tra nếu cửa sổ tồn tại và đang được hiển thị
-                if (myWindow != null && myWindow.IsVisible)
-                {
-                    // Tắt cửa sổ
-                    myWindow.Close();
-                }
-            }
             else if (parameter.ToString() == "QLDH")
             {
                 viewModel.SelectedViewModel = new QLDHViewModel();
@@ -102,7 +89,23 @@ namespace XPhone_Shop_TKPM.Commands
             {
                 viewModel.SelectedViewModel = new TK_DoanhThu_LoiNhuanViewModel();
             }
+            else if (parameter.ToString() == "TKBH")
+            {
+                viewModel.SelectedViewModel = new TKBHViewModel();
+            }
+            else if (parameter.ToString() == "dang_xuat")
+            {
+                LoginView screen = new LoginView();
+                screen.Show();
+                Window myWindow = Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.Name == "dashboard");
 
+                // Kiểm tra nếu cửa sổ tồn tại và đang được hiển thị
+                if (myWindow != null && myWindow.IsVisible)
+                {
+                    // Tắt cửa sổ
+                    myWindow.Close();
+                }
+            }
         }
     }
 }

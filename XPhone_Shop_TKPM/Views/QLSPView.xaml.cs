@@ -50,29 +50,29 @@ namespace XPhone_Shop_TKPM.Views
             InitializeComponent();
             base.DataContext = _viewModel;
 
-            //for (int i = 0; i < Dashboard.menuBTN.Children.Count; i++)
-            //{
-            //    if (Dashboard.menuBTN.Children[i] is MenuButton)
-            //    {
-            //        var select = Dashboard.menuBTN.Children[i] as MenuButton;
-            //        if (select.btn.IsFocused == true)
-            //            select.isActive = true;
-            //        else
-            //            select.isActive = false;
-            //    }
-            //}
+            for (int i = 0; i < Dashboard_Admin_Sale.menuBTN.Children.Count; i++)
+            {
+                if (Dashboard_Admin_Sale.menuBTN.Children[i] is MenuButton)
+                {
+                    var select = Dashboard_Admin_Sale.menuBTN.Children[i] as MenuButton;
+                    if (select.btn.IsFocused == true)
+                        select.isActive = true;
+                    else
+                        select.isActive = false;
+                }
+            }
 
-            //for (int i = 0; i < Dashboard.subMenuBTN.Children.Count; i++)
-            //{
-            //    if (Dashboard.subMenuBTN.Children[i] is MenuButton)
-            //    {
-            //        var select_ = Dashboard.subMenuBTN.Children[i] as MenuButton;
-            //        if (select_.btn.IsFocused == true)
-            //            select_.isActive = true;
-            //        else
-            //            select_.isActive = false;
-            //    }
-            //}
+            for (int i = 0; i < Dashboard_Admin_Sale.subMenuBTN.Children.Count; i++)
+            {
+                if (Dashboard_Admin_Sale.subMenuBTN.Children[i] is MenuButton)
+                {
+                    var select_ = Dashboard_Admin_Sale.subMenuBTN.Children[i] as MenuButton;
+                    if (select_.btn.IsFocused == true)
+                        select_.isActive = true;
+                    else
+                        select_.isActive = false;
+                }
+            }
 
             Global.SaveScreen("QLSP");
         }
