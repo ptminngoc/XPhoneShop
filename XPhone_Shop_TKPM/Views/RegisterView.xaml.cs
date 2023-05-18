@@ -51,7 +51,7 @@ namespace XPhone_Shop_TKPM.Views
             var email = emailTextBox.Text;
             var address = addressTextBox.Text;
 
-            if (name == null || username == null || password == null || passwordConfirm == null || phone == null || email == null || address == null)
+            if (name == "" || username == "" || password == "" || passwordConfirm == "" || phone == "" || email == "" || address == "")
             {
                 check = false;
                 MessageBox.Show("Hãy điền đầy đủ thông tin");
