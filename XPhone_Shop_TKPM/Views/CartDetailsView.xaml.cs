@@ -179,13 +179,14 @@ namespace XPhone_Shop_TKPM.Views
         private void checkoutButton_Click(object sender, RoutedEventArgs e)
         {
             var listStatus = _viewModel.orderStatusList();
-            Debug.WriteLine(listStatus.Count);
+            
             for (int i = 0; i < listStatus.Count; i++)
             {
-                if (listStatus[i].displayText.Equals("Đã thanh toán"))
+                Debug.WriteLine(listStatus[i].displayText);
+                if (listStatus[i].displayText.Equals("Mới tạo"))
                 {
-                    _viewModel.updateStatus(currentCartId, i);
-                    MessageBox.Show("Đã thanh toán thành công");
+                    _viewModel.updateStatus(currentCartId, i + 1);
+                    MessageBox.Show("Bạn đã đặt đơn hàng thành công");
                     screen.Content = new CartDetailsView();
                 }
             }

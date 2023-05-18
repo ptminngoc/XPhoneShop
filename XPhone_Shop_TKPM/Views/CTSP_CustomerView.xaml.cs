@@ -169,7 +169,7 @@ namespace XPhone_Shop_TKPM.Views
             DataContext = new MainViewModel();
         }
 
-        private bool addProduct()
+        private bool addProduct(int status)
         {
             if (addToCartQuantityTextBox.Text == null || addToCartQuantityTextBox.Text.Equals(""))
             {
@@ -177,11 +177,24 @@ namespace XPhone_Shop_TKPM.Views
             }
             else
             {
-                var isAddSuccess = _viewModelCart.addProductToCart(_product, Int16.Parse(addToCartQuantityTextBox.Text));
+                var isAddSuccess = false;
+                // Buy 
+                if (status == 0)
+                {
+                    isAddSuccess = _viewModelCart.addProductToNewOrder(_product, Int16.Parse(addToCartQuantityTextBox.Text));
+                }
+                // Add new product to cart
+                else if (status == 1)
+                {
+                    isAddSuccess = _viewModelCart.addProductToCart(_product, Int16.Parse(addToCartQuantityTextBox.Text));
+                }
                 if (isAddSuccess)
                 {
                     editProductQuantity.Text = (_product.ProductQuantity - Int16.Parse(addToCartQuantityTextBox.Text)).ToString();
-                    MessageBox.Show("Đã thêm sản phẩm vào giỏ hàng");
+                    if (status == 0)
+                        MessageBox.Show("Đã đặt hàng thành công");
+                    else
+                        MessageBox.Show("Đã thêm sản phẩm vào giỏ hàng");
                     return true;
                 }
                 else
@@ -195,13 +208,12 @@ namespace XPhone_Shop_TKPM.Views
 
         private void BtnCartProduct_Click(object sender, RoutedEventArgs e)
         {
-            addProduct();
+            addProduct(1);
         }
 
         private void BtnBuyProduct_Click(object sender, RoutedEventArgs e)
         {
-            if (addProduct())
-                screen.Content = new CartDetailsView();
+            addProduct(0);
         }
     }
 }
