@@ -37,8 +37,17 @@ namespace XPhone_Shop_TKPM.Views
             _cartViewModel = new CartViewModel();
             currentCartId = _cartViewModel.getCartID();
 
-            var select = Dashboard_Customer.menuBTN.Children[1] as MenuButton;
-            select?.btn.Focus();
+            for (int i = 0; i < Dashboard_Customer.menuBTN.Children.Count; i++)
+            {
+                if (Dashboard_Customer.menuBTN.Children[i] is MenuButton)
+                {
+                    var select = Dashboard_Customer.menuBTN.Children[i] as MenuButton;
+                    if (select.btn.IsFocused == true)
+                        select.isActive = true;
+                    else
+                        select.isActive = false;
+                }
+            }
 
             if (currentCartId == 0)
             {
