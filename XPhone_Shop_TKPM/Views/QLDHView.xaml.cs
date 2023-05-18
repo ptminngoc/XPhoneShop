@@ -158,7 +158,7 @@ namespace XPhone_Shop_TKPM.Views
             var order = (OrderModel)button.DataContext;
 
             Global.selectedOrderID = order.OrderID;
-            //screen.Content = new OrderDetailsView();
+            screen.Content = new OrderDetailsView();
             //selectedOrderDetails.ShowDialog();
 
             //_viewModel = new QLDHViewModel();
@@ -173,7 +173,7 @@ namespace XPhone_Shop_TKPM.Views
 
         private void addNewOrderButton_Click(object sender, RoutedEventArgs e)
         {
-            //screen.Content = new AddNewOrderView();
+            screen.Content = new AddNewOrderView();
         }
 
 

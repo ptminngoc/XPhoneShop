@@ -1,0 +1,117 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using XPhone_Shop_TKPM.Models;
+using XPhone_Shop_TKPM.UserControls;
+using XPhone_Shop_TKPM.ViewModels;
+
+namespace XPhone_Shop_TKPM.Views
+{
+    /// <summary>
+    /// Interaction logic for AddNewOrderView.xaml
+    /// </summary>
+    public partial class AddNewOrderView : Page
+    {
+        AddNewOrderViewModel _viewModel;
+
+        public AddNewOrderView()
+        {
+            InitializeComponent();
+            var select = Dashboard_Admin_Sale.menuBTN.Children[2] as MenuButton;
+            select?.btn.Focus();
+            _viewModel = new AddNewOrderViewModel();
+
+            orderStatusComboBox.ItemsSource = _viewModel.getStatusList();
+
+            promotionCombobox.ItemsSource = _viewModel.getPromotionList();
+        }
+
+        private void addNewOrderButton_Click(object sender, RoutedEventArgs e)
+        {
+            string phone = customerPhoneTextBlock.Text;
+
+
+            int statusID = orderStatusComboBox.SelectedIndex;
+            PromotionModel promo;
+            string name = customerNameTextBlock.Text;
+            string email = customerEmailTextBlock.Text;
+            string address = customerAddressTextBlock.Text;
+
+            DateTime? newDate = oderCreateDateTextBlock.SelectedDate;
+
+            if (promotionCombobox.SelectedItem != null)
+            {
+                promo = (PromotionModel)promotionCombobox.SelectedItem;
+            }
+            else
+                promo = null;
+
+            if (phone == null || statusID == -1 ||
+                promotionCombobox.SelectedIndex == -1 || phone == "" ||
+                oderCreateDateTextBlock.Text == null || oderCreateDateTextBlock.Text == "" ||
+                name == null || name == "" || email == null || email == ""
+                )
+            {
+                MessageBox.Show("Xin vui lòng điền hết tất cả các thông tin của đơn hàng ");
+                return;
+            }
+
+            int promoID = promo._promotionId;
+
+            statusID++;
+
+            CustomerModel newCustomer = new CustomerModel() { name = name, address = address, email = email, phone = phone };
+
+            OrderModel newOrder = new OrderModel()
+            {
+                PromotionID = promoID,
+                CustomerPhone = phone,
+                OrderDate = newDate,
+                OrderTotal = 0,
+                OrderStatus = statusID
+            };
+
+            if (!_viewModel.addCustomer(newCustomer))
+            {
+                if (MessageBox.Show("Khách hàng đã tồn tại, bạn có muốn chỉnh sửa thông tin khách hàng giống với những gì vừa nhập không ?", "Xác nhận", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    _viewModel.updateCustomer(newCustomer);
+                }
+            }
+
+            _viewModel.addNewOrder(newOrder);
+            DataContext = new MainViewModel();
+            MessageBox.Show("Thêm đơn hàng mới thành công, vui lòng vào chi tiết đơn hàng này nếu bạn muốn thêm sản phẩm vào đơn");
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void backButton_Click(object sender, RoutedEventArgs e)
+        {
+            var select = Dashboard_Admin_Sale.menuBTN.Children[4] as MenuButton;
+            select?.btn.Focus();
+            DataContext = new MainViewModel();
+        }
+
+        private void customerPhoneTextBlock_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+    }
+}
