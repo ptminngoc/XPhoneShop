@@ -25,7 +25,7 @@
             <Image Source="../img/backBTN.png" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
         </Button>
         <StackPanel Orientation="Horizontal" Width="1065">
-            <ListView x:Name="lst" d:ItemsSource="{d:SampleData ItemCount=20}" Margin="50 100 20 100" Width="490" Height="500" SelectionChanged="lst_SelectionChanged" Background="#E1E1E1">
+            <ListView x:Name="lst" d:ItemsSource="{d:SampleData ItemCount=20}" Margin="50 100 20 100" Width="490" Height="500" SelectionChanged="lst_SelectionChanged" Background="#E1E1E1" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

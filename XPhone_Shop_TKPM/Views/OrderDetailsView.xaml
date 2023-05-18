@@ -92,7 +92,7 @@
 
             <StackPanel Orientation="Horizontal">
                 <Border BorderThickness="1" BorderBrush="Black" Background="#E1E1E1" Margin="16 0 0 0">
-                    <ListView x:Name="lst" d:ItemsSource="{d:SampleData ItemCount=10}"  Width="700" Margin="0 0 0 0" Height="402">
+                    <ListView x:Name="lst" d:ItemsSource="{d:SampleData ItemCount=10}"  Width="700" Margin="0 0 0 0" Height="402" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
