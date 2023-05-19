@@ -4,8 +4,7 @@
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:XPhone_Shop_TKPM"
              xmlns:views="clr-namespace:XPhone_Shop_TKPM.Views"
-             xmlns:viewmodels="clr-namespace:XPhone_Shop_TKPM.ViewModels"
-             StartupUri="MainWindow.xaml">
+             xmlns:viewmodels="clr-namespace:XPhone_Shop_TKPM.ViewModels">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

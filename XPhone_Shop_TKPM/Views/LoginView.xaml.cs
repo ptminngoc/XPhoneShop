@@ -27,6 +27,8 @@ namespace XPhone_Shop_TKPM.Views
         public LoginView()
         {
             InitializeComponent();
+
+            Global.SaveScreen("Login");
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

@@ -35,9 +35,53 @@ namespace XPhone_Shop_TKPM
 
             menuBTN = menu;
             var select = menu.Children[0] as MenuButton;
-            select?.btn.Focus();
-            select.btn.Command = current.UpdateViewCommand;
-            select?.btn.Command.Execute("HTSP");
+            //select?.btn.Focus();
+            //select.btn.Command = current.UpdateViewCommand;
+            //select?.btn.Command.Execute("HTSP");
+
+            string _screen = System.Configuration.ConfigurationManager.AppSettings["Screen"]!;
+            if (_screen.Equals("HTSP"))
+            {
+                select = menu.Children[0] as MenuButton;
+                select?.btn.Focus();
+                select.btn.Command = current.UpdateViewCommand;
+                select?.btn.Command.Execute("HTSP");
+            }
+            else if (_screen.Equals("Cart"))
+            {
+                select = menu.Children[1] as MenuButton;
+                select?.btn.Focus();
+                select.btn.Command = current.UpdateViewCommand;
+                select?.btn.Command.Execute("Cart");
+            }
+            else if (_screen.Equals("HTDM"))
+            {
+                select = menu.Children[2] as MenuButton;
+                select?.btn.Focus();
+                select.btn.Command = current.UpdateViewCommand;
+                select?.btn.Command.Execute("HTDM");
+            }
+            else if (_screen.Equals("TTTK"))
+            {
+                select = menu.Children[3] as MenuButton;
+                select?.btn.Focus();
+                select.btn.Command = current.UpdateViewCommand;
+                select?.btn.Command.Execute("TTTK");
+            }
+            else if (_screen.Equals("DMK"))
+            {
+                select = menu.Children[4] as MenuButton;
+                select?.btn.Focus();
+                select.btn.Command = current.UpdateViewCommand;
+                select?.btn.Command.Execute("DMK");
+            }
+            else
+            {
+                select = menu.Children[0] as MenuButton;
+                select?.btn.Focus();
+                select.btn.Command = current.UpdateViewCommand;
+                select?.btn.Command.Execute("HTSP");
+            }
 
             for (int i = 0; i < menuBTN.Children.Count; i++)
             {

@@ -80,6 +80,8 @@ namespace XPhone_Shop_TKPM.Views
             currentPromo = promotionCombobox.SelectedItem as PromotionModel;
 
             updateMoneyTextBlock();
+
+            Global.SaveScreen("Cart");
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
