@@ -71,39 +71,59 @@ namespace XPhone_Shop_TKPM.Views
         private void updatePage(int page, string keyword = "")
         {
             _currentPage = page;
+
+            if(keyword.Length > 0)
+            {
+                if (_viewModel.updateCusstomerList().Where(x => x.name.ToLower().Contains(keyword.ToLower())).ToList().Count == 0)
+                {
+                    string title = "Tìm kiếm theo tên";
+                    string message = "Không tìm thấy tên khách hàng";
+                    MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Warning);
+                    _listSize = _viewModel.updateCusstomerList().Count;
+                    lst.ItemsSource = _viewModel.updateCusstomerList().Skip((_currentPage - 1) * rowsPerPage).Take(rowsPerPage);
+
+                }
+                else
+                {
+                    _listSize = _viewModel.updateCusstomerList().Where(x => x.name.ToLower().Contains(keyword.ToLower())).ToList().Count;
+                    lst.ItemsSource = _viewModel.updateCusstomerList().Where(x => x.name.ToLower().Contains(keyword.ToLower())).Skip((_currentPage - 1) * rowsPerPage).Take(rowsPerPage);
+                }
+            }
+            else
+            {
+                _listSize = _viewModel.updateCusstomerList().Count;
+                lst.ItemsSource = _viewModel.updateCusstomerList().Skip((_currentPage - 1) * rowsPerPage).Take(rowsPerPage);
+
+            }
+            _totalPage = _listSize / rowsPerPage + ((_listSize % rowsPerPage) == 0 ? 0 : 1);
+            pageCountLabel.Content = $"{_currentPage}/{_totalPage}";
+
             if (_currentPage == 1)
             {
-                prevButton.IsEnabled = false;
-                nextButton.IsEnabled = true;
+                if (_totalPage == _currentPage)
+                {
+                    prevButton.IsEnabled = false;
+                    nextButton.IsEnabled = false;
+                }
+                else
+                {
+                    prevButton.IsEnabled = false;
+                    nextButton.IsEnabled = true;
+                }
             }
 
             else if (_currentPage == _totalPage)
             {
+
                 prevButton.IsEnabled = true;
                 nextButton.IsEnabled = false;
-            }
 
+            }
             else
             {
                 prevButton.IsEnabled = true;
                 nextButton.IsEnabled = true;
             }
-            _listSize = _viewModel.updateCusstomerList().Count;
-
-            if (_viewModel.updateCusstomerList().Where(x => x.name.ToLower().Contains(keyword.ToLower())).ToList().Count == 0)
-            {
-                string title = "Timef kiếm theo tên";
-                string message = "Không tìm thấy tên khách hàng";
-                MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Warning);
-                lst.ItemsSource = _viewModel.updateCusstomerList().Skip((_currentPage - 1) * rowsPerPage).Take(rowsPerPage);
-
-            }
-            else
-            {
-                lst.ItemsSource = _viewModel.updateCusstomerList().Where(x => x.name.ToLower().Contains(keyword.ToLower())).Skip((_currentPage - 1) * rowsPerPage).Take(rowsPerPage);
-            }
-            _totalPage = _listSize / rowsPerPage + ((_listSize % rowsPerPage) == 0 ? 0 : 1);
-            pageCountLabel.Content = $"{_currentPage}/{_totalPage}";
         }
 
 
@@ -183,6 +203,7 @@ namespace XPhone_Shop_TKPM.Views
         {
             string keyword = searchCustomerInput.Text;
             updatePage(_currentPage, keyword);
+            searchCustomerInput.Clear();
         }
 
         // Make sure the input are all numbers

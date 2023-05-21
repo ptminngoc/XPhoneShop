@@ -44,6 +44,9 @@ namespace XPhone_Shop_TKPM.Views
         int _listSize;
         int _productCount = 0;
         bool isFiltering = false;
+        List<ProductModel> _productListCategory = new List<ProductModel>();
+        List<ProductModel> _newProductList = new List<ProductModel>();
+        List<ProductModel> _newProductItem = new List<ProductModel>();
 
         public QLSPView()
         {
@@ -105,40 +108,18 @@ namespace XPhone_Shop_TKPM.Views
         private void updateTotalPage()
         {
             _totalPage = _listSize / rowsPerPage + ((_listSize % rowsPerPage) == 0 ? 0 : 1);
+
             var lines = new List<Tuple<int, int>>();
             for (int i = 1; i <= _totalPage; i++)
             {
                 lines.Add(new Tuple<int, int>(i, _totalPage));
             }
             currentPageComboBox.ItemsSource = lines;
-
         }
 
         private void updatePage(int category, int page, string keyword = "")
         {
             _currentPage = page;
-
-            if (_currentPage == 1)
-            {
-                previousButton.IsEnabled = false;
-                nextButton.IsEnabled = true;
-            }
-
-            else if (_currentPage == _totalPage)
-            {
-                previousButton.IsEnabled = true;
-                nextButton.IsEnabled = false;
-            }
-
-            else
-            {
-                previousButton.IsEnabled = true;
-                nextButton.IsEnabled = true;
-            }
-
-            List<ProductModel> _productListCategory = new List<ProductModel>();
-            List<ProductModel> _newProductList = new List<ProductModel>();
-            List<ProductModel> _newProductItem = new List<ProductModel>();
 
             if (category == 0)
             {
@@ -189,6 +170,34 @@ namespace XPhone_Shop_TKPM.Views
             _listSize = _newProductList.Count;
             _productCount = _newProductItem.Count;
             infoTextBlock.Text = $"Đang hiển thị {_productCount} / {_listSize} sản phẩm";
+
+            _totalPage = _listSize / rowsPerPage + ((_listSize % rowsPerPage) == 0 ? 0 : 1);
+
+            if (_currentPage == 1)
+            {
+                if (_totalPage == _currentPage)
+                {
+                    previousButton.IsEnabled = false;
+                    nextButton.IsEnabled = false;
+                }
+                else
+                {
+                    previousButton.IsEnabled = false;
+                    nextButton.IsEnabled = true;
+                }
+            }
+
+            else if (_currentPage == _totalPage)
+            {
+                previousButton.IsEnabled = true;
+                nextButton.IsEnabled = false;
+            }
+
+            else
+            {
+                previousButton.IsEnabled = true;
+                nextButton.IsEnabled = true;
+            }
         }
 
         private void searchProductButton_Click(object sender, RoutedEventArgs e)
@@ -257,7 +266,7 @@ namespace XPhone_Shop_TKPM.Views
             isFiltering = false;
             fromPrice.Clear();
             toPrice.Clear();
-            updatePage(_currentCategoryCombobox, _currentPage);
+            updatePage(_currentCategoryCombobox, 1);
             updateTotalPage();
             currentPageComboBox.SelectedIndex = _currentPage - 1;
 
@@ -266,7 +275,7 @@ namespace XPhone_Shop_TKPM.Views
         private void ComboPageIndex_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _currentCategoryCombobox = comboboxCategory.SelectedIndex;
-            updatePage(_currentCategoryCombobox, _currentPage);
+            updatePage(_currentCategoryCombobox, 1);
             updateTotalPage();
             currentPageComboBox.SelectedIndex = _currentPage - 1;
         }
@@ -300,7 +309,7 @@ namespace XPhone_Shop_TKPM.Views
 
             //Trace.WriteLine("san pham thu " + index + ", " + _viewModel._productList[index].ProductID);
 
-            nextPage.Content = new CTSPView(_viewModel._productList[index].ProductID);
+            nextPage.Content = new CTSPView(_newProductList[index].ProductID);
         }
 
         private void addProductButton_Click(object sender, RoutedEventArgs e)

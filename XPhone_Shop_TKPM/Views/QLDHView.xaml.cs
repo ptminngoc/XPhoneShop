@@ -183,24 +183,6 @@ namespace XPhone_Shop_TKPM.Views
         {
             _currentPage = page;
 
-            if (_currentPage == 1)
-            {
-                prevButton.IsEnabled = false;
-                nextButton.IsEnabled = true;
-            }
-
-            else if (_currentPage == _totalPage)
-            {
-                prevButton.IsEnabled = true;
-                nextButton.IsEnabled = false;
-            }
-
-            else
-            {
-                prevButton.IsEnabled = true;
-                nextButton.IsEnabled = true;
-            }
-
             if (isFiltering)
             {
                 _listSize = _viewModel._orderList.Where(x => x.OrderDate >= fromDate.Date && x.OrderDate <= toDate.Date).ToList().Count;
@@ -214,6 +196,33 @@ namespace XPhone_Shop_TKPM.Views
 
             _totalPage = _listSize / rowsPerPage + ((_listSize % rowsPerPage) == 0 ? 0 : 1);
             pageCountLabel.Content = $"{_currentPage}/{_totalPage}";
+
+            if (_currentPage == 1)
+            {
+                if (_totalPage == _currentPage)
+                {
+                    prevButton.IsEnabled = false;
+                    nextButton.IsEnabled = false;
+                }
+                else
+                {
+                    prevButton.IsEnabled = false;
+                    nextButton.IsEnabled = true;
+                }
+            }
+
+            else if (_currentPage == _totalPage)
+            {
+
+                prevButton.IsEnabled = true;
+                nextButton.IsEnabled = false;
+
+            }
+            else
+            {
+                prevButton.IsEnabled = true;
+                nextButton.IsEnabled = true;
+            }
         }
 
         // Make sure the input are all numbers
