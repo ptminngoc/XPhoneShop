@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using XPhone_Shop_TKPM.Models;
 
 namespace XPhone_Shop_TKPM.Views
 {
@@ -114,23 +116,38 @@ namespace XPhone_Shop_TKPM.Views
                 }
                 else
                 {
-                    // encrypt password
+                    // hash password
                     string salt = BCrypt.Net.BCrypt.GenerateSalt();
                     string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password, salt);
 
-                    sql = $"INSERT INTO Customer VALUES(N'{name}', '{phone}', '{address}', '{email}')";
-                    command = new SqlCommand(sql, Global.Connection);
-                    command.ExecuteNonQuery();
+                    //random OTP
+                    Random rnd = new Random();
+                    string OTP = rnd.Next(100000, 1000000).ToString();
 
-                    sql = $"INSERT INTO AccountUser VALUES(N'{username}', '{hashedPassword}', 'Customer', '{phone}')";
-                    command = new SqlCommand(sql, Global.Connection);
-                    command.ExecuteNonQuery();
 
-                    MessageBox.Show("Tạo tài khoản thành công");
-                    
-                    Window sc = new LoginView();
-                    sc.Show();
-                    this.Close();
+                    EMail eMail = new EMail();
+
+
+                    Boolean checkEmail = eMail.Send(email, OTP);
+
+                    if (checkEmail == true)
+                    {
+                        AccountModel acur = new AccountModel();
+                        acur.AccountUsername = username;
+                        acur.AccountPassword = hashedPassword; 
+                        acur.AccountTelephone = phone;
+                        acur.AccountAddress =  address;
+                        acur.AccountName = name;
+                        acur.AccountEmail = email;
+
+                        ConfirmOTPView sc = new ConfirmOTPView(acur, OTP);
+                        sc.Show();
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Email không hợp lệ");
+                    }
                 }
             }
         }
