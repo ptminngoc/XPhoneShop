@@ -127,9 +127,6 @@ namespace XPhone_Shop_TKPM.Views
 
                     EMail eMail = new EMail();
 
-                    sql = $"INSERT INTO Customer VALUES(N'{name}', '{phone}', N'{address}', '{email}')";
-                    command = new SqlCommand(sql, Global.Connection);
-                    command.ExecuteNonQuery();
 
                     Boolean checkEmail = eMail.Send(email, OTP);
 
@@ -137,9 +134,9 @@ namespace XPhone_Shop_TKPM.Views
                     {
                         AccountModel acur = new AccountModel();
                         acur.AccountUsername = username;
-                        acur.AccountPassword = hashedPassword; 
+                        acur.AccountPassword = hashedPassword;
                         acur.AccountTelephone = phone;
-                        acur.AccountAddress =  address;
+                        acur.AccountAddress = address;
                         acur.AccountName = name;
                         acur.AccountEmail = email;
 
