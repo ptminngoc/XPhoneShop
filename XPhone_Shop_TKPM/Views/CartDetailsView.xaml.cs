@@ -114,7 +114,7 @@ namespace XPhone_Shop_TKPM.Views
                     if (promoList[i]._promotionPercentage <= 20)
                         promoListNew.Add(promoList[i]);
                 }
-                else if (total <= 100000000)
+                else if (total >= 80000000)
                 {
                     if (promoList[i]._promotionPercentage <= 100)
                         promoListNew.Add(promoList[i]);

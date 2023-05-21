@@ -151,7 +151,7 @@ namespace XPhone_Shop_TKPM
                         else
                         {
                             MessageBox.Show("Can't connect please login");
-
+                            new LoginView().Show();
                         }
                     }
                 }

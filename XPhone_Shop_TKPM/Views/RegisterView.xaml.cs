@@ -118,7 +118,7 @@ namespace XPhone_Shop_TKPM.Views
                     string salt = BCrypt.Net.BCrypt.GenerateSalt();
                     string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password, salt);
 
-                    sql = $"INSERT INTO Customer VALUES(N'{name}', '{phone}', '{address}', '{email}')";
+                    sql = $"INSERT INTO Customer VALUES(N'{name}', '{phone}', N'{address}', '{email}')";
                     command = new SqlCommand(sql, Global.Connection);
                     command.ExecuteNonQuery();
 
