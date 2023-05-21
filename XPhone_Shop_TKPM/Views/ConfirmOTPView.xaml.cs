@@ -1,0 +1,85 @@
+﻿using Microsoft.Data.SqlClient;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using XPhone_Shop_TKPM.Models;
+
+namespace XPhone_Shop_TKPM.Views
+{
+    /// <summary>
+    /// Interaction logic for ConfirmOTPView.xaml
+    /// </summary>
+    public partial class ConfirmOTPView : Window
+    {
+        string otp;
+        string name;
+        string username;
+        string address;
+        string hashedPassword;
+        string phone;
+        string email;
+        public ConfirmOTPView(AccountModel acc, string OTP)
+        {
+            InitializeComponent();
+            otp = OTP;
+            username = acc.AccountUsername;
+            name = acc.AccountName;
+            address = acc.AccountAddress;
+            hashedPassword = acc.AccountPassword;
+            phone = acc.AccountTelephone;
+            email = acc.AccountEmail;
+        }
+
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void confirmButton_Click(object sender, RoutedEventArgs e)
+        {
+            string otpEnter = otpTextBox.Text;
+            if(otp == otpEnter)
+            {
+                var sql = $"INSERT INTO Customer VALUES(N'{name}', '{phone}', '{address}', '{email}')";
+                var command = new SqlCommand(sql, Global.Connection);
+                command.ExecuteNonQuery();
+
+                sql = $"INSERT INTO AccountUser VALUES(N'{username}', '{hashedPassword}', 'Customer', '{phone}')";
+                command = new SqlCommand(sql, Global.Connection);
+                command.ExecuteNonQuery();
+
+                MessageBox.Show("Mã OTP hợp lệ. Tạo tài khoản thành công!");
+                Window sc = new LoginView();
+                sc.Show();
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Lỗi. Mã OTP không hợp lệ!");
+            }
+        }
+
+        private void close_btn_click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void backButton_Click(object sender, RoutedEventArgs e)
+        {
+            Window sc = new RegisterView();
+            sc.Show();
+            this.Show();
+        }
+    }
+}

@@ -33,6 +33,8 @@ namespace XPhone_Shop_TKPM
             DataContext = current;
             InitializeComponent();
 
+            usernameTV.Text = Global.usernameCurrent;
+
             menuBTN = menu;
             var select = menu.Children[0] as MenuButton;
             //select?.btn.Focus();
