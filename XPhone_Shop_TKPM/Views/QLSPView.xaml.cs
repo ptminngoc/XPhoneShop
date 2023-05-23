@@ -319,140 +319,149 @@ namespace XPhone_Shop_TKPM.Views
 
         private void importProductButton_Click(object sender, RoutedEventArgs e)
         {
-            // Mở hộp thoại mở tập tin
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*";
-            if (openFileDialog.ShowDialog() == true)
+            if (_viewModel._categoryList.Count == 0)
             {
-                string filename = openFileDialog.FileName;
-                // Do something with the selected file path
-
-                try
+                string title = "Import";
+                string message = "Danh sách loại sản phẩm đang trống. Vui lòng import loại danh sách sản phẩm trước!";
+                MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                // Mở hộp thoại mở tập tin
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*";
+                if (openFileDialog.ShowDialog() == true)
                 {
-                    var document = SpreadsheetDocument.Open(filename, false);
-                    var wbPart = document.WorkbookPart!;
-                    var sheets = wbPart.Workbook.Descendants<Sheet>()!;
-                    var sheet = sheets.FirstOrDefault(
-                        s => s.Name == "Product");
-                    if (sheet == null)
+                    string filename = openFileDialog.FileName;
+                    // Do something with the selected file path
+
+                    try
                     {
+                        var document = SpreadsheetDocument.Open(filename, false);
+                        var wbPart = document.WorkbookPart!;
+                        var sheets = wbPart.Workbook.Descendants<Sheet>()!;
+                        var sheet = sheets.FirstOrDefault(
+                            s => s.Name == "Product");
+                        if (sheet == null)
                         {
-                            string title = "Import category từ Excel";
-                            string message = "Import không thành công, File excel không có sheet là Product";
-                            MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
-                        }
-                    }
-                    var wsPart = (WorksheetPart)(wbPart!.GetPartById(sheet.Id!));
-                    var cells = wsPart.Worksheet.Descendants<Cell>();
-
-                    int row = 2;
-                    Cell idCategoryCell;
-                    int countAdd = 0;
-
-                    do
-                    {
-                        idCategoryCell = cells.FirstOrDefault(
-                            c => c?.CellReference == $"A{row}"
-                        )!;
-
-                        if (idCategoryCell?.InnerText.Length > 0)
-                        {
-                            string id = idCategoryCell.InnerText;
-
-                            //ProductName
-                            Cell nameCell = cells.FirstOrDefault(
-                                c => c?.CellReference == $"B{row}"
-                            )!;
-                            string stringId = nameCell!.InnerText;
-                            var stringTable = wbPart
-                            .GetPartsOfType<SharedStringTablePart>()
-                                 .FirstOrDefault()!;
-                            string name = stringTable.SharedStringTable
-                                 .ElementAt(int.Parse(stringId)).
-                            InnerText;
-
-                            //Avatar
-                            Cell avatarCell = cells.FirstOrDefault(
-                                c => c?.CellReference == $"C{row}"
-                            )!;
-                            string stringIdAvatar = avatarCell!.InnerText;
-                            var stringTableAvatar = wbPart
-                            .GetPartsOfType<SharedStringTablePart>()
-                                 .FirstOrDefault()!;
-                            string avatar = stringTableAvatar.SharedStringTable
-                                 .ElementAt(int.Parse(stringIdAvatar)).
-                            InnerText;
-
-                            //Quantiny
-                            Cell quantinyCell = cells.FirstOrDefault(
-                                c => c?.CellReference == $"D{row}"
-                            )!;
-                            string quantiny = quantinyCell!.InnerText;
-
-                            //Price
-                            Cell priceCell = cells.FirstOrDefault(
-                               c => c?.CellReference == $"E{row}"
-                           )!;
-                            string price = priceCell!.InnerText;
-
-                            //Price_Orginal
-                            Cell priceOrginalCell = cells.FirstOrDefault(
-                                    c => c?.CellReference == $"F{row}"
-                                )!;
-                            string priceOrginal = priceCell!.InnerText;
-
-                            bool productExists = _viewModel._productList
-                                .Where(p => p.CategoryID != null && p.ProductName != null && p.ProductAvatar != null && p.ProductQuantity != null && p.ProductPrice != null && p.ProductPriceOriginal != null) // Filter products based on criteria
-                                .Any(p => p.CategoryID == int.Parse(id) && p.ProductName == name && p.ProductAvatar == avatar && p.ProductQuantity == int.Parse(quantiny) && p.ProductPrice == double.Parse(price) && p.ProductPriceOriginal == double.Parse(priceOrginal)); // Check if desired product exists in filtered array
-
-                            if (!productExists)
                             {
-                                _viewModel._product.CategoryID = int.Parse(id);
-                                _viewModel._product.ProductName = name;
-                                _viewModel._product.ProductAvatar = avatar;
-                                _viewModel._product.ProductQuantity = int.Parse(quantiny);
-                                _viewModel._product.ProductPrice = double.Parse(price);
-                                _viewModel._product.ProductPriceOriginal = double.Parse(priceOrginal);
-
-                                var add = _viewModel.AddNewProduct(_viewModel._product);
-                                if (add)
-                                {
-                                    countAdd++;
-                                }
+                                string title = "Import category từ Excel";
+                                string message = "Import không thành công, File excel không có sheet là Product";
+                                MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
+                                return;
                             }
-                            Trace.WriteLine($"{id} - {name} - {avatar} - {quantiny} - {price} - {priceOrginal}");
                         }
-                        row++;
+                        var wsPart = (WorksheetPart)(wbPart!.GetPartById(sheet.Id!));
+                        var cells = wsPart.Worksheet.Descendants<Cell>();
 
-                    } while (idCategoryCell?.InnerText.Length > 0);
+                        int row = 2;
+                        Cell idCategoryCell;
+                        int countAdd = 0;
 
-                    Console.ReadLine();
-                    ProductListView.ItemsSource = _viewModel.getProductList();
+                        do
+                        {
+                            idCategoryCell = cells.FirstOrDefault(
+                                c => c?.CellReference == $"A{row}"
+                            )!;
 
-                    if (countAdd > 0)
-                    {
-                        string title = "Import sản phẩm từ Excel" + countAdd;
-                        string message = "Đã thêm thành công " + countAdd + " sản phẩm mới";
-                        MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Information);
+                            if (idCategoryCell?.InnerText.Length > 0)
+                            {
+                                string id = idCategoryCell.InnerText;
+
+                                //ProductName
+                                Cell nameCell = cells.FirstOrDefault(
+                                    c => c?.CellReference == $"B{row}"
+                                )!;
+                                string stringId = nameCell!.InnerText;
+                                var stringTable = wbPart
+                                .GetPartsOfType<SharedStringTablePart>()
+                                     .FirstOrDefault()!;
+                                string name = stringTable.SharedStringTable
+                                     .ElementAt(int.Parse(stringId)).
+                                InnerText;
+
+                                //Avatar
+                                Cell avatarCell = cells.FirstOrDefault(
+                                    c => c?.CellReference == $"C{row}"
+                                )!;
+                                string stringIdAvatar = avatarCell!.InnerText;
+                                var stringTableAvatar = wbPart
+                                .GetPartsOfType<SharedStringTablePart>()
+                                     .FirstOrDefault()!;
+                                string avatar = stringTableAvatar.SharedStringTable
+                                     .ElementAt(int.Parse(stringIdAvatar)).
+                                InnerText;
+
+                                //Quantiny
+                                Cell quantinyCell = cells.FirstOrDefault(
+                                    c => c?.CellReference == $"D{row}"
+                                )!;
+                                string quantiny = quantinyCell!.InnerText;
+
+                                //Price
+                                Cell priceCell = cells.FirstOrDefault(
+                                   c => c?.CellReference == $"E{row}"
+                               )!;
+                                string price = priceCell!.InnerText;
+
+                                //Price_Orginal
+                                Cell priceOrginalCell = cells.FirstOrDefault(
+                                        c => c?.CellReference == $"F{row}"
+                                    )!;
+                                string priceOrginal = priceCell!.InnerText;
+
+                                bool productExists = _viewModel._productList
+                                    .Where(p => p.CategoryID != null && p.ProductName != null && p.ProductAvatar != null && p.ProductQuantity != null && p.ProductPrice != null && p.ProductPriceOriginal != null) // Filter products based on criteria
+                                    .Any(p => p.CategoryID == int.Parse(id) && p.ProductName == name && p.ProductAvatar == avatar && p.ProductQuantity == int.Parse(quantiny) && p.ProductPrice == double.Parse(price) && p.ProductPriceOriginal == double.Parse(priceOrginal)); // Check if desired product exists in filtered array
+
+                                if (!productExists)
+                                {
+                                    _viewModel._product.CategoryID = int.Parse(id);
+                                    _viewModel._product.ProductName = name;
+                                    _viewModel._product.ProductAvatar = avatar;
+                                    _viewModel._product.ProductQuantity = int.Parse(quantiny);
+                                    _viewModel._product.ProductPrice = double.Parse(price);
+                                    _viewModel._product.ProductPriceOriginal = double.Parse(priceOrginal);
+
+                                    var add = _viewModel.AddNewProduct(_viewModel._product);
+                                    if (add)
+                                    {
+                                        countAdd++;
+                                    }
+                                }
+                                Trace.WriteLine($"{id} - {name} - {avatar} - {quantiny} - {price} - {priceOrginal}");
+                            }
+                            row++;
+
+                        } while (idCategoryCell?.InnerText.Length > 0);
+
+                        Console.ReadLine();
+                        ProductListView.ItemsSource = _viewModel.getProductList();
+
+                        if (countAdd > 0)
+                        {
+                            string title = "Import sản phẩm từ Excel" + countAdd;
+                            string message = "Đã thêm thành công " + countAdd + " sản phẩm mới";
+                            MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            string title = "Import sản phẩm từ Excel";
+                            string message = "Không có dữ liệu hoặc dữ liệu đã tồn tại trong cơ sở dữ liệu";
+                            MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
                         string title = "Import sản phẩm từ Excel";
-                        string message = "Không có dữ liệu hoặc dữ liệu đã tồn tại trong cơ sở dữ liệu";
-                        MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Information);
+                        string message = "Import không thành công";
+                        MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
-                catch (Exception ex)
-                {
-                    string title = "Import sản phẩm từ Excel";
-                    string message = "Import không thành công";
-                    MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                updatePage(_currentCategoryCombobox, _currentPage);
+                updateTotalPage();
+                currentPageComboBox.SelectedIndex = _currentPage - 1;
             }
-            updatePage(_currentCategoryCombobox, _currentPage);
-            updateTotalPage();
-            currentPageComboBox.SelectedIndex = _currentPage - 1;
         }
 
         private void nextPage_Navigated(object sender, NavigationEventArgs e)

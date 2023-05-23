@@ -64,6 +64,69 @@ namespace XPhone_Shop_TKPM.Repositories
             return result;
         }
 
+        public bool addOrder(OrderModel order)
+        {
+            bool result = false;
+            int lastId = 0;
+
+            //Global.Connection = new SqlConnection(Global.ConnectionString);
+            //Global.Connection.Open();
+
+            if (Global.Connection != null)
+            {
+                // Retrieve the ID of the last Category record
+                var getLastIdSql = "SELECT TOP 1 Purchase_ID FROM Purchase ORDER BY Purchase_ID DESC";
+                var getLastIdCommand = new SqlCommand(getLastIdSql, Global.Connection);
+                var lastIdReader = getLastIdCommand.ExecuteReader();
+
+                if (lastIdReader.Read())
+                {
+                    lastId = lastIdReader.GetInt32(0);
+                }
+
+                lastIdReader.Close();
+
+                // Turn on IDENTITY_INSERT for the Category table
+                var setIdInsertSql = "SET IDENTITY_INSERT Purchase ON";
+                var setIdInsertCommand = new SqlCommand(setIdInsertSql, Global.Connection);
+                setIdInsertCommand.ExecuteNonQuery();
+
+                // Insert the new Category record with a new ID
+                var sql = "INSERT INTO Purchase(Purchase_ID, Promotion_ID, Total, Centered_At, Status, Customer_Phone) VALUES(@id, @promotion, @total, @date, @status, @phone)";
+
+                var command = new SqlCommand(sql, Global.Connection);
+
+                command.Parameters.AddWithValue("@id", lastId + 1);
+                if(order.PromotionID == 0)
+                {
+                    command.Parameters.AddWithValue("@promotion", DBNull.Value);
+                }
+                else
+                {
+                    command.Parameters.AddWithValue("@promotion", order.PromotionID);
+                }
+                command.Parameters.AddWithValue("@total", order.OrderTotal);
+                command.Parameters.AddWithValue("@date", order.OrderDate);
+                command.Parameters.AddWithValue("@status", order.OrderStatus);
+                command.Parameters.AddWithValue("@phone", order.CustomerPhone);
+
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected > 0)
+                {
+                    result = true;
+                }
+
+                // Turn off IDENTITY_INSERT for the Category table
+                var unsetIdInsertSql = "SET IDENTITY_INSERT Purchase OFF";
+                var unsetIdInsertCommand = new SqlCommand(unsetIdInsertSql, Global.Connection);
+                unsetIdInsertCommand.ExecuteNonQuery();
+            }
+
+            //Global.Connection?.Close();
+            return result;
+
+        }
         public bool editOrderWithPhone(string? phone, string? oldphone)
         {
             bool result = false;

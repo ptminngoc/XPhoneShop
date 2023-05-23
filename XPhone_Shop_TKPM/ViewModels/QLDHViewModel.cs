@@ -12,7 +12,15 @@ namespace XPhone_Shop_TKPM.ViewModels
     class QLDHViewModel : BaseViewModel
     {
         public ObservableCollection<OrderModel> _orderList;
+        public ObservableCollection<OrderDetailsProductModel> _orderDetailList;
+        public OrderModel _order;
+        public ObservableCollection<CustomerModel> _customerList;
+        public OrderDetailsProductModel _orderDetail;
+        public ObservableCollection<ProductModel> _productList;
         private OrderRepository _repository = new OrderRepository();
+        private OrderDetailsRepository _repository2 = new OrderDetailsRepository();
+        private CustomerRepository _repository3 = new CustomerRepository();
+        private ProductRepository _repository4 = new ProductRepository();
 
         private int _OrderID { get; set; }
         private float _OrderTotal { get; set; }
@@ -27,6 +35,12 @@ namespace XPhone_Shop_TKPM.ViewModels
         {
             // query and get all orders
             _orderList = _repository.getAllOrder();
+            _order = new OrderModel();  
+            _orderDetail = new OrderDetailsProductModel();
+            _orderDetailList = _repository2.getAllPurchaseDetail();
+            _customerList = _repository3.getAllCustomer();
+            _productList = _repository4.getAllProduct();
+
         }
 
         public int PromotionID
@@ -109,6 +123,27 @@ namespace XPhone_Shop_TKPM.ViewModels
             }
             _repository.deleteOrderId(id);
             _orderList.RemoveAt(i);
+        }
+
+        public bool AddNewOrder(OrderModel _newOrder)
+        {
+            return _repository.addOrder(_newOrder);
+        }
+
+        public bool AddNewOrderDetail(OrderDetailsProductModel _newOrder)
+        {
+            return _repository2.addOrderDetail(_newOrder);
+        }
+
+        public void updateOrderDetail(int orderId, int productId, int quantity)
+        {
+            _repository2.updateProductQuantityInOrderDetail(orderId, productId, quantity);
+        }
+
+        public ObservableCollection<OrderModel> getOrdertList()
+        {
+            _orderList = _repository.getAllOrder();
+            return _orderList;
         }
     }
 }

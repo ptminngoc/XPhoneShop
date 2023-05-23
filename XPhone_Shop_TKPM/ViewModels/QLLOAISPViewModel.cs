@@ -14,13 +14,15 @@ namespace XPhone_Shop_TKPM.ViewModels
     {
         public ObservableCollection<CategoryTypeStatistic> _categoryList;
         public CategoryModel _category = null;
-
+        public ObservableCollection<OrderModel> _orderList;
         private CategoryRepository _repository = new CategoryRepository();
+        private OrderRepository _repository2 = new OrderRepository();
 
         public QLLOAISPViewModel()
         {
             _categoryList = _repository.getCategoryWithProduct();
-            _category = new CategoryModel();    
+            _category = new CategoryModel();
+            _orderList =  _repository2.getAllOrder();
         }
 
         public ObservableCollection<CategoryTypeStatistic> getCategory()
@@ -42,6 +44,11 @@ namespace XPhone_Shop_TKPM.ViewModels
         public bool RemoveCategory(int? cId)
         {
             return _repository.removeCategory(cId);
+        }
+
+        public void removeOrderDetail(int id)
+        {
+            _repository2.deleteOrderId(id);
         }
     }
 }

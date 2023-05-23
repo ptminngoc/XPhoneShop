@@ -46,6 +46,91 @@ namespace XPhone_Shop_TKPM.Repositories
             return productResultList;
         }
 
+        public ObservableCollection<OrderDetailsProductModel> getAllPurchaseDetail()
+        {
+            // result list (all products of a specific order)
+            ObservableCollection<OrderDetailsProductModel> productResultList = new ObservableCollection<OrderDetailsProductModel>();
+
+            if (Global.Connection != null)
+            {
+                string sql = $"select * from PurchaseDetail";
+
+                var command = new SqlCommand(sql, Global.Connection);
+
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    productResultList.Add(new OrderDetailsProductModel()
+                    {
+                        purchaseDetailId = (int)reader["PurchaseDetail_ID"],
+                        purchaseId = (int)reader["Purchase_ID"],
+                        productId = (int)reader["Product_ID"],
+                        orderQuantity = (int)reader["Quantity"],
+                    });
+                }
+
+                reader.Close();
+            }
+
+
+            return productResultList;
+        }
+
+        public bool addOrderDetail(OrderDetailsProductModel order)
+        {
+            bool result = false;
+            int lastId = 0;
+
+            //Global.Connection = new SqlConnection(Global.ConnectionString);
+            //Global.Connection.Open();
+
+            if (Global.Connection != null)
+            {
+                // Retrieve the ID of the last Category record
+                var getLastIdSql = "SELECT TOP 1 PurchaseDetail_ID FROM PurchaseDetail ORDER BY Purchase_ID DESC";
+                var getLastIdCommand = new SqlCommand(getLastIdSql, Global.Connection);
+                var lastIdReader = getLastIdCommand.ExecuteReader();
+
+                if (lastIdReader.Read())
+                {
+                    lastId = lastIdReader.GetInt32(0);
+                }
+
+                lastIdReader.Close();
+
+                // Turn on IDENTITY_INSERT for the Category table
+                var setIdInsertSql = "SET IDENTITY_INSERT PurchaseDetail ON";
+                var setIdInsertCommand = new SqlCommand(setIdInsertSql, Global.Connection);
+                setIdInsertCommand.ExecuteNonQuery();
+
+                // Insert the new Category record with a new ID
+                var sql = "INSERT INTO PurchaseDetail(PurchaseDetail_ID, Purchase_ID, Product_ID, Quantity) VALUES(@id, @purchase, @product, @quantity)";
+
+                var command = new SqlCommand(sql, Global.Connection);
+
+                command.Parameters.AddWithValue("@id", lastId + 1);
+                command.Parameters.AddWithValue("@purchase", lastId + 1);
+                command.Parameters.AddWithValue("@product", order.productId);
+                command.Parameters.AddWithValue("@quantity", order.ProductQuantity);
+
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected > 0)
+                {
+                    result = true;
+                }
+
+                // Turn off IDENTITY_INSERT for the Category table
+                var unsetIdInsertSql = "SET IDENTITY_INSERT PurchaseDetail OFF";
+                var unsetIdInsertCommand = new SqlCommand(unsetIdInsertSql, Global.Connection);
+                unsetIdInsertCommand.ExecuteNonQuery();
+            }
+
+            //Global.Connection?.Close();
+            return result;
+
+        }
+
         public void removeProductFromOrder(int productId, int orderId)
         {
             if (Global.Connection == null)
@@ -62,6 +147,24 @@ namespace XPhone_Shop_TKPM.Repositories
 
                 command.Parameters.AddWithValue("@ID", orderId);
                 command.Parameters.AddWithValue("@pID", productId);
+
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void removeOrderDetail(int id)
+        {
+            if (Global.Connection == null)
+            {
+                Global.Connection = new SqlConnection(Global.ConnectionString);
+            }
+
+            if (Global.Connection != null)
+            {
+                var sql = $"delete from PurchaseDetail where PurchaseDetail_ID = @ID";
+                var command = new SqlCommand(sql, Global.Connection);
+
+                command.Parameters.AddWithValue("@ID", id);
 
                 command.ExecuteNonQuery();
             }

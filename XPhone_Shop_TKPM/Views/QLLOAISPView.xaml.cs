@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace XPhone_Shop_TKPM.Views
 {
@@ -227,6 +228,11 @@ namespace XPhone_Shop_TKPM.Views
                     {
                         _viewModel.RemoveCategory(category.id);
                     }
+
+                    foreach (var order in _viewModel._orderList)
+                    {
+                        _viewModel.removeOrderDetail(order.OrderID);
+                    }
                     do
                     {
                         nameCell = cells.FirstOrDefault(
@@ -247,15 +253,12 @@ namespace XPhone_Shop_TKPM.Views
                                  .ElementAt(int.Parse(stringId)).
                             InnerText;
 
-                            bool isExist = false;
-
-                             _viewModel._category.CategoryName = name;
-                             var add = _viewModel.AddNewCategory(_viewModel._category);
+                            _viewModel._category.CategoryName = name;
+                            var add = _viewModel.AddNewCategory(_viewModel._category);
                             if (add)
                             {
-                                 countAdd++;
+                                countAdd++;
                             }
-                            Trace.WriteLine($"{name}");
                         }
                         row++;
 
