@@ -581,7 +581,7 @@ namespace XPhone_Shop_TKPM.Repositories
             if (Global.Connection != null)
             {
                 // query to get user's role
-                string sql = $"update Purchase set Status = 3 where Purchase_ID = @ID";
+                string sql = $"update Purchase set Status = 3, Centered_At = '" + DateTime.Now.ToString("yyyy-MM-dd") + "'" + "where Purchase_ID = @ID";
                 var command = new SqlCommand(sql, Global.Connection);
                 command.Parameters.AddWithValue("@ID", id);
                 command.ExecuteNonQuery();

@@ -109,44 +109,61 @@ namespace XPhone_Shop_TKPM.Views
                 }
                 reader.Close();
 
-
                 if (checkExist == true)
                 {
                     MessageBox.Show("Tài khoản đã tồn tại");
                 }
                 else
                 {
-                    // hash password
-                    string salt = BCrypt.Net.BCrypt.GenerateSalt();
-                    string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password, salt);
+                    //Kiểm tra số điện thoại có trong bảng Account User 
+                    sql = $"select * from AccountUser where Tel = '{phone}'";
+                    command = new SqlCommand(sql, Global.Connection);
+                    reader = command.ExecuteReader();
 
-                    //random OTP
-                    Random rnd = new Random();
-                    string OTP = rnd.Next(100000, 1000000).ToString();
-
-
-                    EMail eMail = new EMail();
-
-
-                    Boolean checkEmail = eMail.Send(email, OTP);
-
-                    if (checkEmail == true)
+                    if (reader.Read() != false)
                     {
-                        AccountModel acur = new AccountModel();
-                        acur.AccountUsername = username;
-                        acur.AccountPassword = hashedPassword;
-                        acur.AccountTelephone = phone;
-                        acur.AccountAddress = address;
-                        acur.AccountName = name;
-                        acur.AccountEmail = email;
+                        checkExist = true;
+                    }
+                    reader.Close();
 
-                        ConfirmOTPView sc = new ConfirmOTPView(acur, OTP);
-                        sc.Show();
-                        this.Close();
+                    if (checkExist == true)
+                    {
+                        MessageBox.Show("Số điện thoại này đã đăng kí tài khoản. Vui lòng nhập số khác!");
                     }
                     else
                     {
-                        MessageBox.Show("Email không hợp lệ");
+                        // hash password
+                        string salt = BCrypt.Net.BCrypt.GenerateSalt();
+                        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password, salt);
+
+                        //random OTP
+                        Random rnd = new Random();
+                        string OTP = rnd.Next(100000, 1000000).ToString();
+
+
+                        EMail eMail = new EMail();
+
+
+                        Boolean checkEmail = eMail.Send(email, OTP);
+
+                        if (checkEmail == true)
+                        {
+                            AccountModel acur = new AccountModel();
+                            acur.AccountUsername = username;
+                            acur.AccountPassword = hashedPassword;
+                            acur.AccountTelephone = phone;
+                            acur.AccountAddress = address;
+                            acur.AccountName = name;
+                            acur.AccountEmail = email;
+
+                            ConfirmOTPView sc = new ConfirmOTPView(acur, OTP);
+                            sc.Show();
+                            this.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Email không hợp lệ");
+                        }
                     }
                 }
             }

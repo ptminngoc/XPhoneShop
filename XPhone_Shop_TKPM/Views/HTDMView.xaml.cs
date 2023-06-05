@@ -35,6 +35,11 @@ namespace XPhone_Shop_TKPM.Views
             InitializeComponent();
 
             order = orderProductDetailRepository.getAll();
+            order = new ObservableCollection<OrderProductDetailModel>(order
+            .Where(p => p.OrderDate.HasValue)
+            .OrderByDescending(p => p.OrderDate.Value)
+            .ToList());
+            
             DonMuaListView.ItemsSource = order;
 
             for (int i = 0; i < Dashboard_Customer.menuBTN.Children.Count; i++)
@@ -61,22 +66,51 @@ namespace XPhone_Shop_TKPM.Views
             {
                 case 0:
                     order = orderProductDetailRepository.getAll();
+                    List<DateTime> dateList = new List<DateTime>();
+                    order = new ObservableCollection<OrderProductDetailModel>(order
+                    .Where(p => p.OrderDate.HasValue)
+                    .OrderByDescending(p => p.OrderDate.Value)
+                    .ToList());
+
                     DonMuaListView.ItemsSource = order;
                     break;
                 case 1:
                     order = orderProductDetailRepository.getMoiTao();
+                    
+                    order = new ObservableCollection<OrderProductDetailModel>(order
+                    .Where(p => p.OrderDate.HasValue)
+                    .OrderByDescending(p => p.OrderDate.Value)
+                    .ToList());
+                    
                     DonMuaListView.ItemsSource = order;
                     break;
                 case 2:
                     order = orderProductDetailRepository.getDangGiao();
+                    order = new ObservableCollection<OrderProductDetailModel>(order
+                    .Where(p => p.OrderDate.HasValue)
+                    .OrderByDescending(p => p.OrderDate.Value)
+                    .ToList());
+
                     DonMuaListView.ItemsSource = order;
                     break;
                 case 3:
                     order = orderProductDetailRepository.getHoanThanh();
+                    
+                    order = new ObservableCollection<OrderProductDetailModel>(order
+                    .Where(p => p.OrderDate.HasValue)
+                    .OrderByDescending(p => p.OrderDate.Value)
+                    .ToList());
+
                     DonMuaListView.ItemsSource = order;
                     break;
                 case 4:
                     order = orderProductDetailRepository.getDaHuy();
+                    
+                    order = new ObservableCollection<OrderProductDetailModel>(order
+                    .Where(p => p.OrderDate.HasValue)
+                    .OrderByDescending(p => p.OrderDate.Value)
+                    .ToList());
+
                     DonMuaListView.ItemsSource = order;
                     break;
             }
@@ -98,6 +132,7 @@ namespace XPhone_Shop_TKPM.Views
             orderProductDetailRepository.cancelOrderId(currrentItem.OrderID);
 
             order[i].OrderStatus = 3;
+            order[i].OrderDate = DateTime.Now;
             order[i].OrderStatusDisplayText = "Đã hủy";
 
             if (index == 1)
